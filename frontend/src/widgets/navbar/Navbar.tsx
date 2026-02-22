@@ -1,0 +1,32 @@
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import { IoGridOutline, IoCheckboxOutline, IoSettingsOutline } from 'react-icons/io5';
+import styles from './Navbar.module.css';
+
+const links = [
+  { to: '/', label: 'Dashboard', icon: <IoGridOutline size={20} /> },
+  { to: '/todos', label: 'Todos', icon: <IoCheckboxOutline size={20} /> },
+  { to: '/settings', label: 'Settings', icon: <IoSettingsOutline size={20} /> },
+];
+
+export const Navbar: React.FC = () => {
+  return (
+    <nav className={styles.nav}>
+      <div className={styles.brand}>✦ Todos</div>
+      <div className={styles.links}>
+        {links.map((l) => (
+          <NavLink
+            key={l.to}
+            to={l.to}
+            className={({ isActive }) =>
+              `${styles.link} ${isActive ? styles.active : ''}`
+            }
+          >
+            {l.icon}
+            <span>{l.label}</span>
+          </NavLink>
+        ))}
+      </div>
+    </nav>
+  );
+};
