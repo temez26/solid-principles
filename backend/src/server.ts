@@ -1,36 +1,33 @@
 import express from 'express';
 import { config } from './config';
-import { createContainer } from './container';
-import { createTodoRoutes } from './interfaces/routes/todoRoutes';
-import { errorHandler } from './interfaces/middleware/errorHandler';
-import { corsMiddleware } from './interfaces/middleware/cors';
+import { createContainer } from './core/container';
+import { getPool } from './config/database/connection';
+import { errorHandler } from './shared/middleware/errorHandler';
+import { corsMiddleware } from './shared/middleware/cors';
 
 function bootstrap(): void {
   const app = express();
 
-  // Middleware
   app.use(corsMiddleware);
   app.use(express.json());
 
-  // Dependency Injection
-  const { todoController } = createContainer();
+  // Shared infrastructure deps passed to every module
+  const deps = { pool: getPool() };
 
-  // Routes
-  app.use('/api/todos', createTodoRoutes(todoController));
+  // Mount all modules — server has zero knowledge of features
+  const registry = createContainer();
+  registry.mount(app, deps);
 
-  // Health check
+  // Health check (cross-cutting, lives in server)
   app.get('/api/health', (_req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
   });
 
-  // Error handler (must be last)
   app.use(errorHandler);
 
-  // Start
   app.listen(config.port, () => {
     console.log(`\n🚀 Server running at http://localhost:${config.port}`);
-    console.log(`📋 Todos API: http://localhost:${config.port}/api/todos`);
-    console.log(`💚 Health:    http://localhost:${config.port}/api/health\n`);
+    console.log(`📋 Health: http://localhost:${config.port}/api/health\n`);
   });
 }
 

@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
-import { DomainError } from '../../domain/errors/DomainError';
+import { DomainError } from '../errors/DomainError';
 
 /**
  * SRP: Translates errors into HTTP responses.
