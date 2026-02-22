@@ -1,2 +1,3 @@
-# solid-principles
-This repo contains basic todo application with solid principles utilased with architectural patterns
+# SOLID Principles
+
+This repository contains a basic TODO application demonstrating the SOLID principles and with architectural patterns.
