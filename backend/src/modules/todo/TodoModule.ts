@@ -5,8 +5,8 @@ import { CreateTodoUseCase } from './application/useCases/CreateTodoUseCase';
 import { GetTodosUseCase } from './application/useCases/GetTodosUseCase';
 import { ToggleTodoUseCase } from './application/useCases/ToggleTodoUseCase';
 import { DeleteTodoUseCase } from './application/useCases/DeleteTodoUseCase';
-import { TodoController } from './interfaces/controllers/TodoController';
-import { createTodoRoutes } from './interfaces/routes/todoRoutes';
+import { TodoController } from './presentation/controllers/TodoController';
+import { createTodoRoutes } from './presentation/routes/todoRoutes';
 
 /**
  * SRP: This class is the single place that knows how to wire up the Todo feature.
