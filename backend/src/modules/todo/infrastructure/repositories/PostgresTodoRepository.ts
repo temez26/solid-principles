@@ -2,6 +2,13 @@ import type { Pool } from 'pg';
 import type { TodoRepository } from '../../domain/repositories/TodoRepository';
 import { Todo } from '../../domain/entities/Todo';
 
+/**
+ * LSP — Liskov Substitution Principle
+ *
+ * Implements TodoRepository. Can be swapped with AnyRepository
+ * without any change to use cases or controllers.
+ */
+
 export class PostgresTodoRepository implements TodoRepository {
   constructor(private readonly pool: Pool) {}
 

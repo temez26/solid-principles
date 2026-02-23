@@ -13,6 +13,4 @@ import { TodoModule } from '../modules/todo/TodoModule';
 export function createContainer(): ModuleRegistry {
   return new ModuleRegistry()
     .register(new TodoModule());
-    // .register(new UserModule())   ← adding future modules is this simple
-    // .register(new AuthModule())
 }

@@ -17,19 +17,16 @@ export class TodoModule implements IModule {
   private router!: Router;
 
   register(deps: ModuleDeps): void {
-    // Infrastructure
+
     const repository = new PostgresTodoRepository(deps.pool);
 
-    // Use Cases
     const createTodo = new CreateTodoUseCase(repository);
     const getTodos = new GetTodosUseCase(repository);
     const toggleTodo = new ToggleTodoUseCase(repository);
     const deleteTodo = new DeleteTodoUseCase(repository);
 
-    // Controller
     const controller = new TodoController(createTodo, getTodos, toggleTodo, deleteTodo);
 
-    // Router
     this.router = createTodoRoutes(controller);
   }
 

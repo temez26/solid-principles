@@ -1,7 +1,7 @@
 import express from 'express';
-import { config } from './config';
+import { config } from './shared/config';
 import { createContainer } from './core/container';
-import { getPool } from './config/database/connection';
+import { getPool } from './shared/config/database/connection';
 import { errorHandler } from './shared/middleware/errorHandler';
 import { corsMiddleware } from './shared/middleware/cors';
 

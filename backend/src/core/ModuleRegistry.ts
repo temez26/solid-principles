@@ -10,7 +10,7 @@ export class ModuleRegistry {
 
   register(module: IModule): this {
     this.modules.push(module);
-    return this; // fluent API
+    return this;
   }
 
   /** Wire all modules into Express */

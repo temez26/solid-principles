@@ -7,7 +7,7 @@ import { TodoMapper } from '../dtos/TodoMapper';
 
 /**
  * SRP: Only creates a todo.
- * DIP: Depends on TodoRepository interface (domain), not InMemoryTodoRepository.
+ * DIP: Depends on TodoRepository interface (domain), not AnyRepository.
  */
 export class CreateTodoUseCase implements UseCase<CreateTodoDTO, TodoResponseDTO> {
   constructor(private readonly todoRepository: TodoRepository) {}
