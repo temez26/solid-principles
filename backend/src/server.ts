@@ -2,8 +2,8 @@ import express from 'express';
 import { config } from './shared/config';
 import { createContainer } from './core/container';
 import { getPool } from './shared/config/database/connection';
-import { errorHandler } from './shared/middleware/errorHandler';
-import { corsMiddleware } from './shared/middleware/cors';
+import { errorHandler } from './shared/infrastructure/middleware/errorHandler';
+import { corsMiddleware } from './shared/infrastructure/middleware/cors';
 
 function bootstrap(): void {
   const app = express();

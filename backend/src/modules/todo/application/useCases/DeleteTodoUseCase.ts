@@ -1,6 +1,6 @@
-import type { UseCase } from './UseCase';
+import type { UseCase } from '../../../../shared/domain/UseCase';
 import type { TodoRepository } from '../../domain/repositories/TodoRepository';
-import { NotFoundError } from '../../../../shared/errors/DomainError';
+import { NotFoundError } from '../../../../shared/domain/errors/DomainError';
 
 export class DeleteTodoUseCase implements UseCase<string, void> {
   constructor(private readonly todoRepository: TodoRepository) {}

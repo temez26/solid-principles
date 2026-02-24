@@ -3,10 +3,6 @@ import type { IModule, ModuleDeps } from '../../core/Module';
 import { PostgresUserRepository } from './infrastructure/repositories/PostgresUserRepository';
 import { BcryptPasswordHasher } from '../../shared/infrastructure/services/BcryptPasswordHasher';
 import { RegisterUserUseCase } from './application/useCases/RegisterUserUseCase';
-import { LoginUserUseCase } from './application/useCases/LoginUserUseCase';
-import { GetUserUseCase } from './application/useCases/GetUserUseCase';
-import { UpdateUserUseCase } from './application/useCases/UpdateUserUseCase';
-import { DeleteUserUseCase } from './application/useCases/DeleteUserUseCase';
 import { UserController } from './presentation/controllers/UserController';
 import { createUserRoutes } from './presentation/routes/userRoutes';
 
@@ -19,17 +15,9 @@ export class UserModule implements IModule {
     const passwordHasher = new BcryptPasswordHasher();
 
     const registerUser = new RegisterUserUseCase(repository, passwordHasher);
-    const loginUser = new LoginUserUseCase(repository);
-    const getUser = new GetUserUseCase(repository);
-    const updateUser = new UpdateUserUseCase(repository);
-    const deleteUser = new DeleteUserUseCase(repository);
 
     const controller = new UserController(
       registerUser,
-      loginUser,
-      getUser,
-      updateUser,
-      deleteUser,
     );
 
     this.router = createUserRoutes(controller);

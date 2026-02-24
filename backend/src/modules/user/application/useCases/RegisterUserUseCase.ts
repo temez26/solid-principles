@@ -1,3 +1,4 @@
+import type { UseCase } from '../../../../shared/domain/UseCase';
 import type { UserRepository } from '../../domain/repositories/UserRepository';
 import type { IPasswordHasher } from '../../../../shared/domain/services/IPasswordHasher';
 import type { RegisterUserDTO } from '../dtos/RegisterUserDTO';
@@ -5,7 +6,7 @@ import type { UserResponse } from '../dtos/UserResponse';
 import { UserMapper } from '../dtos/UserMapper';
 import { User } from '../../domain/entities/User';
 
-export class RegisterUserUseCase {
+export class RegisterUserUseCase implements UseCase<RegisterUserDTO, UserResponse> {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly passwordHasher: IPasswordHasher,
