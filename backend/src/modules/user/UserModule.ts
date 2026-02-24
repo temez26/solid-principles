@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import type { IModule, ModuleDeps } from '../../core/Module';
 import { PostgresUserRepository } from './infrastructure/repositories/PostgresUserRepository';
+import { BcryptPasswordHasher } from '../../shared/infrastructure/services/BcryptPasswordHasher';
 import { RegisterUserUseCase } from './application/useCases/RegisterUserUseCase';
 import { LoginUserUseCase } from './application/useCases/LoginUserUseCase';
 import { GetUserUseCase } from './application/useCases/GetUserUseCase';
@@ -15,8 +16,9 @@ export class UserModule implements IModule {
 
   register(deps: ModuleDeps): void {
     const repository = new PostgresUserRepository(deps.pool);
+    const passwordHasher = new BcryptPasswordHasher();
 
-    const registerUser = new RegisterUserUseCase(repository);
+    const registerUser = new RegisterUserUseCase(repository, passwordHasher);
     const loginUser = new LoginUserUseCase(repository);
     const getUser = new GetUserUseCase(repository);
     const updateUser = new UpdateUserUseCase(repository);
