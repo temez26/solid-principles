@@ -27,7 +27,7 @@ export class TodoModule implements IModule {
 
     const controller = new TodoController(createTodo, getTodos, toggleTodo, deleteTodo);
 
-    this.router = createTodoRoutes(controller);
+    this.router = createTodoRoutes(controller, deps.jwtService);
   }
 
   getRouter(): Router {

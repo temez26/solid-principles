@@ -35,10 +35,20 @@ export class User {
     return new User(props);
   }
 
-  get id(): UniqueId        { return this.props.id; }
-  get username(): string    { return this.props.username; }
-  get email(): string       { return this.props.email; }
-  get passwordHash(): string{ return this.props.passwordHash; }
-  get createdAt(): Date     { return this.props.createdAt; }
-  get updatedAt(): Date     { return this.props.updatedAt; }
+  public update(username: string, email: string, passwordHash: string): User {
+    return new User({
+      ...this.props,
+      username,
+      email,
+      passwordHash,
+      updatedAt: new Date(),
+    });
+  }
+
+  get id(): UniqueId         { return this.props.id; }
+  get username(): string     { return this.props.username; }
+  get email(): string        { return this.props.email; }
+  get passwordHash(): string { return this.props.passwordHash; }
+  get createdAt(): Date      { return this.props.createdAt; }
+  get updatedAt(): Date      { return this.props.updatedAt; }
 }
