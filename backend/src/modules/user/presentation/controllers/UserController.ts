@@ -32,7 +32,6 @@ export class UserController {
 
   getMe = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      // req.user is set by authMiddleware
       const user = await this.getMeUseCase.execute(req.user!.sub);
       res.json(user);
     } catch (err) { next(err); }

@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import { Router } from 'express';
 import type { IModule, ModuleDeps } from '../../core/Module';
 import { PostgresUserRepository } from './infrastructure/repositories/PostgresUserRepository';
 import { BcryptPasswordHasher } from '../../shared/infrastructure/services/BcryptPasswordHasher';

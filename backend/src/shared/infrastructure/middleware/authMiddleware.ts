@@ -26,7 +26,7 @@ export function createAuthMiddleware(jwtService: IJwtService) {
       req.user = jwtService.verify(token);
       next();
     } catch (err) {
-      next(err); // DomainError → errorHandler maps it to 422
+      next(err);
     }
   };
 }
