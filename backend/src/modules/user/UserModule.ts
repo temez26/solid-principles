@@ -3,6 +3,8 @@ import type { IModule, ModuleDeps } from '../../core/Module';
 import { PostgresUserRepository } from './infrastructure/repositories/PostgresUserRepository';
 import { BcryptPasswordHasher } from '../../shared/infrastructure/services/BcryptPasswordHasher';
 import { RegisterUserUseCase } from './application/useCases/RegisterUserUseCase';
+import { GetUserUseCase } from './application/useCases/GetUserUseCase';
+import { DeleteUserUseCase } from './application/useCases/DeleteUserUseCase';
 import { UserController } from './presentation/controllers/UserController';
 import { createUserRoutes } from './presentation/routes/userRoutes';
 
@@ -15,9 +17,13 @@ export class UserModule implements IModule {
     const passwordHasher = new BcryptPasswordHasher();
 
     const registerUser = new RegisterUserUseCase(repository, passwordHasher);
+    const getUser = new GetUserUseCase(repository);
+    const deleteUser = new DeleteUserUseCase(repository);
 
     const controller = new UserController(
       registerUser,
+      getUser,
+      deleteUser,
     );
 
     this.router = createUserRoutes(controller);

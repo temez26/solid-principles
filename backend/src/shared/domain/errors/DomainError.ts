@@ -24,3 +24,19 @@ export class ValidationError extends DomainError {
     Object.setPrototypeOf(this, ValidationError.prototype);
   }
 }
+
+export class InvalidIdError extends DomainError {
+  constructor(id: string) {
+    super(`Invalid id format: "${id}"`, 400);
+    this.name = 'InvalidIdError';
+    Object.setPrototypeOf(this, InvalidIdError.prototype);
+  }
+}
+
+export class ConflictError extends DomainError {
+  constructor(message: string) {
+    super(message, 409);
+    this.name = 'ConflictError';
+    Object.setPrototypeOf(this, ConflictError.prototype);
+  }
+}
