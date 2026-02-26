@@ -1,9 +1,11 @@
 import { UniqueId } from '../../../../shared/domain/valueObjects/UniqueId';
+import { Email } from '../valueObjects/Email';
+import { Username } from '../valueObjects/Username';
 
 export interface UserProps {
   id: UniqueId;
-  username: string;
-  email: string;
+  username: Username;  // ← was string
+  email: Email;        // ← was string
   passwordHash: string;
   createdAt: Date;
   updatedAt: Date;
@@ -17,14 +19,14 @@ export class User {
   }
 
   public static create(
-    username: string,
-    email: string,
+    rawUsername: string,
+    rawEmail: string,
     passwordHash: string,
   ): User {
     return new User({
       id: UniqueId.create(),
-      username,
-      email,
+      username: Username.create(rawUsername),
+      email: Email.create(rawEmail),
       passwordHash,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -35,19 +37,19 @@ export class User {
     return new User(props);
   }
 
-  public update(username: string, email: string, passwordHash: string): User {
+  public update(rawUsername: string, rawEmail: string, passwordHash: string): User {
     return new User({
       ...this.props,
-      username,
-      email,
+      username: Username.create(rawUsername),
+      email: Email.create(rawEmail),
       passwordHash,
       updatedAt: new Date(),
     });
   }
 
   get id(): UniqueId         { return this.props.id; }
-  get username(): string     { return this.props.username; }
-  get email(): string        { return this.props.email; }
+  get username(): string     { return this.props.username.toString(); }
+  get email(): string        { return this.props.email.toString(); }
   get passwordHash(): string { return this.props.passwordHash; }
   get createdAt(): Date      { return this.props.createdAt; }
   get updatedAt(): Date      { return this.props.updatedAt; }

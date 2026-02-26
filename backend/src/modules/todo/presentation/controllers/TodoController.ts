@@ -38,6 +38,7 @@ export class TodoController {
   ): Promise<void> => {
     try {
       const { title } = req.body;
+      if (typeof title !== 'string') throw new ValidationError('Invalid title');
       const todo = await this.createTodo.execute({ title });
       res.status(201).json({ data: todo });
     } catch (err) {

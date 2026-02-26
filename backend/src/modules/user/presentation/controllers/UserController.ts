@@ -21,7 +21,6 @@ export class UserController {
   createUser: RequestHandler = async (req, res, next) => {
     try {
       const user = await this.registerUserUseCase.execute(req.body as RegisterUserDTO);
-      const token = this.jwtService.sign({ sub: user.id, email: user.email, username: user.username });
       res.status(201).json({ token, user });
     } catch (err) { next(err); }
   };
@@ -29,7 +28,6 @@ export class UserController {
   loginUser: RequestHandler = async (req, res, next) => {
     try {
       const user = await this.loginUserUseCase.execute(req.body as LoginUserDTO);
-      const token = this.jwtService.sign({ sub: user.id, email: user.email, username: user.username });
       res.status(200).json({ token, user });
     } catch (err) { next(err); }
   };
