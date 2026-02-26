@@ -1,4 +1,4 @@
-import type { UseCase } from '../../../../shared/domain/UseCase';
+import type { UseCase } from '../../../../shared/application/UseCase';
 import type { UserRepository } from '../../domain/repositories/UserRepository';
 import type { IPasswordHasher } from '../../../../shared/domain/services/IPasswordHasher';
 import type { UpdateUserDTO } from '../dtos/UserDTOs';

@@ -1,4 +1,4 @@
-import type { UseCase } from '../../../../shared/domain/UseCase';
+import type { UseCase } from '../../../../shared/application/UseCase';
 import type { TodoRepository } from '../../domain/repositories/TodoRepository';
 import type { TodoResponseDTO } from '../dtos/TodoResponseDTO';
 import { TodoMapper } from '../dtos/TodoMapper';

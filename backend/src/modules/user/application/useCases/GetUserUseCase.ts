@@ -1,4 +1,4 @@
-import type { UseCase } from '../../../../shared/domain/UseCase';
+import type { UseCase } from '../../../../shared/application/UseCase';
 import type { UserRepository } from '../../domain/repositories/UserRepository';
 import type { UserResponse } from '../dtos/UserResponse';
 import { UserMapper } from '../dtos/UserMapper';
