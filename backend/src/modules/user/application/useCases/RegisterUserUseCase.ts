@@ -2,20 +2,20 @@ import type { UseCase } from '../../../../shared/domain/UseCase';
 import type { UserRepository } from '../../domain/repositories/UserRepository';
 import type { IPasswordHasher } from '../../../../shared/domain/services/IPasswordHasher';
 import type { IJwtService } from '../../../../shared/domain/services/IJwtService';
-import type { UserDTO } from '../dtos/UserDTO';
+import type { RegisterUserDTO } from '../dtos/UserDTOs';
 import type { RegisterResponse } from '../dtos/UserResponse';
 import { UserMapper } from '../dtos/UserMapper';
 import { User } from '../../domain/entities/User';
 import { ConflictError } from '../../../../shared/domain/errors/DomainError';
 
-export class RegisterUserUseCase implements UseCase<UserDTO, RegisterResponse> {
+export class RegisterUserUseCase implements UseCase<RegisterUserDTO, RegisterResponse> {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly passwordHasher: IPasswordHasher,
-    private readonly jwtService: IJwtService, // ← add
+    private readonly jwtService: IJwtService,
   ) {}
 
-  async execute(dto: UserDTO): Promise<RegisterResponse> {
+  async execute(dto: RegisterUserDTO): Promise<RegisterResponse> {
     const existingEmail = await this.userRepository.findByEmail(dto.email);
     if (existingEmail) throw new ConflictError('Email already in use');
 

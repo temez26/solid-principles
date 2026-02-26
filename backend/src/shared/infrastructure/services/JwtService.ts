@@ -13,7 +13,7 @@ export class JwtService implements IJwtService {
   }
 
   sign(payload: JwtPayload): string {
-    return jwt.sign(payload, this.secret, { expiresIn: this.expiresIn });
+    return jwt.sign(payload, this.secret, { expiresIn: this.expiresIn as unknown as number });
   }
 
   verify(token: string): JwtPayload {

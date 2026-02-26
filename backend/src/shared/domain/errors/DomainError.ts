@@ -40,3 +40,11 @@ export class ConflictError extends DomainError {
     Object.setPrototypeOf(this, ConflictError.prototype);
   }
 }
+
+export class UnauthorizedError extends DomainError {
+  constructor(message: string = 'Unauthorized') {
+    super(message, 401);
+    this.name = 'UnauthorizedError';
+    Object.setPrototypeOf(this, UnauthorizedError.prototype);
+  }
+}

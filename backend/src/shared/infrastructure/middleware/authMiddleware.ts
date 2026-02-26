@@ -1,23 +1,23 @@
 import type { Request, Response, NextFunction } from 'express';
-import type { IJwtService } from '../../domain/services/IJwtService';
+import type { IJwtService, JwtPayload } from '../../domain/services/IJwtService';
+import { UnauthorizedError } from '../../domain/errors/DomainError';
 
-/**
- * SRP: Only extracts and validates the JWT. Nothing else.
- * DIP: Depends on IJwtService abstraction, not a concrete implementation.
- *
- * Usage:
- *   router.get('/me', createAuthMiddleware(jwtService), controller.getMe);
- */
+/** Before auth middleware — user may not exist */
+export interface AuthenticatedRequest extends Request {
+  user?: JwtPayload;
+}
+
+/** After auth middleware — user is guaranteed */
+export interface AuthorizedRequest extends Request {
+  user: JwtPayload;
+}
+
 export function createAuthMiddleware(jwtService: IJwtService) {
-  return (req: Request, res: Response, next: NextFunction): void => {
+  return (req: AuthenticatedRequest, _res: Response, next: NextFunction): void => {
     const authHeader = req.headers.authorization;
 
     if (!authHeader?.startsWith('Bearer ')) {
-      res.status(401).json({
-        error: 'Unauthorized',
-        message: 'Missing or malformed Authorization header',
-      });
-      return;
+      return next(new UnauthorizedError('Missing or malformed Authorization header'));
     }
 
     const token = authHeader.slice(7);
@@ -25,8 +25,8 @@ export function createAuthMiddleware(jwtService: IJwtService) {
     try {
       req.user = jwtService.verify(token);
       next();
-    } catch (err) {
-      next(err);
+    } catch {
+      next(new UnauthorizedError('Invalid or expired token'));
     }
   };
 }

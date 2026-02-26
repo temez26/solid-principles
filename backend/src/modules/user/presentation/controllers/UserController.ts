@@ -1,10 +1,12 @@
-import type { Request, Response, NextFunction } from 'express';
+import type { RequestHandler } from 'express';
 import type { RegisterUserUseCase } from '../../application/useCases/RegisterUserUseCase';
 import type { LoginUserUseCase } from '../../application/useCases/LoginUserUseCase';
 import type { GetUserUseCase } from '../../application/useCases/GetUserUseCase';
 import type { GetMeUseCase } from '../../application/useCases/GetMeUseCase';
 import type { DeleteUserUseCase } from '../../application/useCases/DeleteUserUseCase';
 import type { UpdateUserUseCase } from '../../application/useCases/UpdateUserUseCase';
+import type { RegisterUserDTO, LoginUserDTO, UpdateUserDTO } from '../../application/dtos/UserDTOs';
+import type { AuthorizedRequest } from '../../../../shared/infrastructure/middleware/authMiddleware';
 
 export class UserController {
   constructor(
@@ -16,44 +18,45 @@ export class UserController {
     private readonly updateUserUseCase: UpdateUserUseCase,
   ) {}
 
-  createUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  createUser: RequestHandler = async (req, res, next) => {
     try {
-      const user = await this.registerUserUseCase.execute(req.body);
-      res.status(201).json(user);
+      const result = await this.registerUserUseCase.execute(req.body as RegisterUserDTO);
+      res.status(201).json(result);
     } catch (err) { next(err); }
   };
 
-  loginUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  loginUser: RequestHandler = async (req, res, next) => {
     try {
-      const result = await this.loginUserUseCase.execute(req.body);
+      const result = await this.loginUserUseCase.execute(req.body as LoginUserDTO);
       res.json(result);
     } catch (err) { next(err); }
   };
 
-  getMe = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  getMe: RequestHandler = async (req, res, next) => {
     try {
-      const user = await this.getMeUseCase.execute(req.user!.sub);
+      const { sub } = (req as AuthorizedRequest).user;
+      const user = await this.getMeUseCase.execute(sub);
       res.json(user);
     } catch (err) { next(err); }
   };
 
-  getUserById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  getUserById: RequestHandler = async (req, res, next) => {
     try {
-      const user = await this.getUserUseCase.execute(req.params.id);
+      const user = await this.getUserUseCase.execute(String(req.params.id));
       res.json(user);
     } catch (err) { next(err); }
   };
 
-  updateUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  updateUser: RequestHandler = async (req, res, next) => {
     try {
-      const user = await this.updateUserUseCase.execute({ id: req.params.id, ...req.body });
+      const user = await this.updateUserUseCase.execute(req.body as UpdateUserDTO);
       res.json(user);
     } catch (err) { next(err); }
   };
 
-  removeUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  removeUser: RequestHandler = async (req, res, next) => {
     try {
-      await this.deleteUserUseCase.execute(req.params.id);
+      await this.deleteUserUseCase.execute(String(req.params.id));
       res.status(204).send();
     } catch (err) { next(err); }
   };

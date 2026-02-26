@@ -1,19 +1,19 @@
 import type { UseCase } from '../../../../shared/domain/UseCase';
 import type { UserRepository } from '../../domain/repositories/UserRepository';
 import type { IPasswordHasher } from '../../../../shared/domain/services/IPasswordHasher';
-import type { UserDTO } from '../dtos/UserDTO';
+import type { UpdateUserDTO } from '../dtos/UserDTOs';
 import type { UserResponse } from '../dtos/UserResponse';
 import { UserMapper } from '../dtos/UserMapper';
 import { NotFoundError, InvalidIdError, ConflictError } from '../../../../shared/domain/errors/DomainError';
 import { UniqueId } from '../../../../shared/domain/valueObjects/UniqueId';
 
-export class UpdateUserUseCase implements UseCase<UserDTO, UserResponse> {
+export class UpdateUserUseCase implements UseCase<UpdateUserDTO, UserResponse> {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly passwordHasher: IPasswordHasher,
   ) {}
 
-  async execute(dto: UserDTO): Promise<UserResponse> {
+  async execute(dto: UpdateUserDTO): Promise<UserResponse> {
     if (!UniqueId.isValid(dto.id)) {
       throw new InvalidIdError(dto.id);
     }
@@ -25,16 +25,12 @@ export class UpdateUserUseCase implements UseCase<UserDTO, UserResponse> {
 
     if (dto.email && dto.email !== user.email) {
       const existingEmail = await this.userRepository.findByEmail(dto.email);
-      if (existingEmail) {
-        throw new ConflictError('Email already in use');
-      }
+      if (existingEmail) throw new ConflictError('Email already in use');
     }
 
     if (dto.username && dto.username !== user.username) {
       const existingUsername = await this.userRepository.findByUsername(dto.username);
-      if (existingUsername) {
-        throw new ConflictError('Username already in use');
-      }
+      if (existingUsername) throw new ConflictError('Username already in use');
     }
 
     const passwordHash = dto.password
@@ -43,7 +39,7 @@ export class UpdateUserUseCase implements UseCase<UserDTO, UserResponse> {
 
     const updatedUser = user.update(
       dto.username ?? user.username,
-      dto.email ?? user.email,
+      dto.email    ?? user.email,
       passwordHash,
     );
 

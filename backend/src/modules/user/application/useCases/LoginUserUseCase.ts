@@ -2,19 +2,19 @@ import type { UseCase } from '../../../../shared/domain/UseCase';
 import type { UserRepository } from '../../domain/repositories/UserRepository';
 import type { IPasswordHasher } from '../../../../shared/domain/services/IPasswordHasher';
 import type { IJwtService } from '../../../../shared/domain/services/IJwtService';
-import type { UserDTO } from '../dtos/UserDTO';
-import type { LoginResponse } from '../dtos/LoginResponse';
+import type { LoginUserDTO } from '../dtos/UserDTOs';
+import type { LoginResponse } from '../dtos/UserResponse';
 import { UserMapper } from '../dtos/UserMapper';
-import { NotFoundError, ValidationError } from '../../../../shared/domain/errors/DomainError';
+import { ValidationError } from '../../../../shared/domain/errors/DomainError';
 
-export class LoginUserUseCase implements UseCase<UserDTO, LoginResponse> {
+export class LoginUserUseCase implements UseCase<LoginUserDTO, LoginResponse> {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly passwordHasher: IPasswordHasher,
     private readonly jwtService: IJwtService,
   ) {}
 
-  async execute(dto: UserDTO): Promise<LoginResponse> {
+  async execute(dto: LoginUserDTO): Promise<LoginResponse> {
     const user = await this.userRepository.findByEmail(dto.email);
     if (!user) throw new ValidationError('Invalid email or password');
 
@@ -22,8 +22,8 @@ export class LoginUserUseCase implements UseCase<UserDTO, LoginResponse> {
     if (!isValid) throw new ValidationError('Invalid email or password');
 
     const token = this.jwtService.sign({
-      sub: user.id.toString(),
-      email: user.email,
+      sub:      user.id.toString(),
+      email:    user.email,
       username: user.username,
     });
 
