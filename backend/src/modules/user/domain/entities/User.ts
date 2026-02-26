@@ -4,8 +4,8 @@ import { Username } from '../valueObjects/Username';
 
 export interface UserProps {
   id: UniqueId;
-  username: Username;  // ← was string
-  email: Email;        // ← was string
+  username: Username; 
+  email: Email;        
   passwordHash: string;
   createdAt: Date;
   updatedAt: Date;

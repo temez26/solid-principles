@@ -6,7 +6,6 @@ import type { DeleteUserUseCase } from '../../application/useCases/DeleteUserUse
 import type { UpdateUserUseCase } from '../../application/useCases/UpdateUserUseCase';
 import type { RegisterUserDTO, LoginUserDTO, UpdateUserDTO } from '../../application/dtos/UserDTOs';
 import type { AuthorizedRequest } from '../../../../shared/infrastructure/middleware/authMiddleware';
-import type { IJwtService } from '../../../../shared/domain/services/IJwtService';
 
 export class UserController {
   constructor(
@@ -15,20 +14,19 @@ export class UserController {
     private readonly getUserUseCase:      GetUserUseCase,
     private readonly deleteUserUseCase:   DeleteUserUseCase,
     private readonly updateUserUseCase:   UpdateUserUseCase,
-    private readonly jwtService:          IJwtService,
   ) {}
 
   createUser: RequestHandler = async (req, res, next) => {
     try {
       const user = await this.registerUserUseCase.execute(req.body as RegisterUserDTO);
-      res.status(201).json({ token, user });
+      res.status(201).json({  user });
     } catch (err) { next(err); }
   };
 
   loginUser: RequestHandler = async (req, res, next) => {
     try {
       const user = await this.loginUserUseCase.execute(req.body as LoginUserDTO);
-      res.status(200).json({ token, user });
+      res.status(200).json({  user });
     } catch (err) { next(err); }
   };
 

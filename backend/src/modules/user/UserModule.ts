@@ -18,8 +18,8 @@ export class UserModule implements IModule {
     const repository     = new PostgresUserRepository(deps.pool);
     const passwordHasher = new BcryptPasswordHasher();
 
-    const registerUser = new RegisterUserUseCase(repository, passwordHasher);
-    const loginUser    = new LoginUserUseCase(repository, passwordHasher);
+    const registerUser = new RegisterUserUseCase(repository, passwordHasher,deps.jwtService);
+    const loginUser    = new LoginUserUseCase(repository, passwordHasher, deps.jwtService);
     const getUser      = new GetUserUseCase(repository);
     const deleteUser   = new DeleteUserUseCase(repository);
     const updateUser   = new UpdateUserUseCase(repository, passwordHasher);
@@ -30,7 +30,6 @@ export class UserModule implements IModule {
       getUser,
       deleteUser,
       updateUser,
-      deps.jwtService,
     );
 
     this.router = createUserRoutes(controller, deps.jwtService);

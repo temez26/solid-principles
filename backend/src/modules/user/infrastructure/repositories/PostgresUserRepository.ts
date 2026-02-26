@@ -3,6 +3,8 @@ import type { UserRepository } from '../../domain/repositories/UserRepository';
 import type { User as UserEntity } from '../../domain/entities/User';
 import { User } from '../../domain/entities/User';
 import { UniqueId } from '../../../../shared/domain/valueObjects/UniqueId';
+import { Username } from '../../domain/valueObjects/Username';
+import { Email } from '../../domain/valueObjects/Email';
 
 export class PostgresUserRepository implements UserRepository {
   constructor(private readonly pool: Pool) {}
@@ -61,8 +63,8 @@ export class PostgresUserRepository implements UserRepository {
   private toEntity(row: Record<string, unknown>): UserEntity {
     return User.reconstitute({
       id:           UniqueId.fromString(row.id as string),
-      username:     row.username as string,
-      email:        row.email as string,
+      username:     Username.create(row.username as string),
+      email:        Email.create(row.email as string),
       passwordHash: row.password_hash as string,
       createdAt:    new Date(row.created_at as string),
       updatedAt:    new Date(row.updated_at as string),
