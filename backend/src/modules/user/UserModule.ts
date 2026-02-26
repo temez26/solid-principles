@@ -5,7 +5,6 @@ import { BcryptPasswordHasher } from '../../shared/infrastructure/services/Bcryp
 import { RegisterUserUseCase } from './application/useCases/RegisterUserUseCase';
 import { LoginUserUseCase } from './application/useCases/LoginUserUseCase';
 import { GetUserUseCase } from './application/useCases/GetUserUseCase';
-import { GetMeUseCase } from './application/useCases/GetMeUseCase';
 import { DeleteUserUseCase } from './application/useCases/DeleteUserUseCase';
 import { UpdateUserUseCase } from './application/useCases/UpdateUserUseCase';
 import { UserController } from './presentation/controllers/UserController';
@@ -16,13 +15,12 @@ export class UserModule implements IModule {
   private router!: Router;
 
   register(deps: ModuleDeps): void {
-    const repository = new PostgresUserRepository(deps.pool);
+    const repository     = new PostgresUserRepository(deps.pool);
     const passwordHasher = new BcryptPasswordHasher();
 
-    const registerUser = new RegisterUserUseCase(repository, passwordHasher, deps.jwtService);
-    const loginUser    = new LoginUserUseCase(repository, passwordHasher, deps.jwtService);
+    const registerUser = new RegisterUserUseCase(repository, passwordHasher);
+    const loginUser    = new LoginUserUseCase(repository, passwordHasher);
     const getUser      = new GetUserUseCase(repository);
-    const getMe        = new GetMeUseCase(repository);
     const deleteUser   = new DeleteUserUseCase(repository);
     const updateUser   = new UpdateUserUseCase(repository, passwordHasher);
 
@@ -30,9 +28,9 @@ export class UserModule implements IModule {
       registerUser,
       loginUser,
       getUser,
-      getMe,
       deleteUser,
       updateUser,
+      deps.jwtService,
     );
 
     this.router = createUserRoutes(controller, deps.jwtService);

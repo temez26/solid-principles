@@ -10,19 +10,12 @@ export function createUserRoutes(
   const router = Router();
   const auth = createAuthMiddleware(jwtService);
 
-  const publicRouter = Router();
-  publicRouter.post('/register', controller.createUser);
-  publicRouter.post('/login',    controller.loginUser);
+  router.post('/register', controller.createUser);
+  router.post('/login',    controller.loginUser);
 
-  const protectedRouter = Router();
-  protectedRouter.use(auth);
-  protectedRouter.get('/me',      controller.getMe);
-  protectedRouter.get('/:id',     controller.getUserById);
-  protectedRouter.patch('/:id',   controller.updateUser);
-  protectedRouter.delete('/:id',  controller.removeUser);
-
-  router.use(publicRouter);
-  router.use(protectedRouter);
+  router.get('/me',         auth, controller.getCurrentUser);
+  router.patch('/me',       auth, controller.updateUser);
+  router.delete('/me',      auth, controller.removeUser);
 
   return router;
 }
