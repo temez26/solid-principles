@@ -12,18 +12,15 @@ function bootstrap(): void {
   app.use(corsMiddleware);
   app.use(express.json());
 
-  // Shared infrastructure deps passed to every module
   const deps = { 
     pool: getPool(),
     jwtService: createJwtService(), 
 
    };
 
-  // Mount all modules — server has zero knowledge of features
   const registry = createContainer();
   registry.mount(app, deps);
 
-  // Health check (cross-cutting, lives in server)
   app.get('/api/health', (_req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
   });
