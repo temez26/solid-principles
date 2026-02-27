@@ -1,13 +1,13 @@
 import type { Request, Response, NextFunction } from 'express';
-
-const ALLOWED_ORIGIN = process.env.CORS_ORIGIN ?? 'http://localhost:5173';
+import { config } from '../../config';
 
 export function corsMiddleware(
   req: Request,
   res: Response,
   next: NextFunction,
 ): void {
-  res.header('Access-Control-Allow-Origin', ALLOWED_ORIGIN);
+  res.header('Access-Control-Allow-Origin', config.corsOrigin);
+  res.header('Access-Control-Allow-Credentials', 'true');
   res.header('Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept, Authorization',
   );
