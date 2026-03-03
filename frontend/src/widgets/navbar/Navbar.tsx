@@ -1,6 +1,13 @@
-import React from 'react';
+﻿import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { IoGridOutline, IoCheckboxOutline, IoSettingsOutline } from 'react-icons/io5';
+import {
+  IoGridOutline,
+  IoCheckboxOutline,
+  IoSettingsOutline,
+  IoLogOutOutline,
+} from 'react-icons/io5';
+import { useAuthStore } from '../../entities/user';
+import { useLogout } from '../../features/logout';
 import styles from './Navbar.module.css';
 
 const links = [
@@ -10,9 +17,12 @@ const links = [
 ];
 
 export const Navbar: React.FC = () => {
+  const user = useAuthStore((s) => s.user);
+  const logout = useLogout();
+
   return (
     <nav className={styles.nav}>
-      <div className={styles.brand}>✦ Todos</div>
+      <div className={styles.brand}>Todos</div>
       <div className={styles.links}>
         {links.map((l) => (
           <NavLink
@@ -26,6 +36,12 @@ export const Navbar: React.FC = () => {
             <span>{l.label}</span>
           </NavLink>
         ))}
+      </div>
+      <div className={styles.actions}>
+        {user && <span className={styles.username}>{user.username}</span>}
+        <button className={styles.logoutBtn} onClick={logout} aria-label="Logout">
+          <IoLogOutOutline size={20} />
+        </button>
       </div>
     </nav>
   );
