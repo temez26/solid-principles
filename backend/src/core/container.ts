@@ -1,5 +1,6 @@
 import { ModuleRegistry } from './ModuleRegistry';
 import { TodoModule } from '../modules/todo/TodoModule';
+import { UserModule } from '../modules/user/UserModule'
 
 /**
  * Composition Root.
@@ -7,10 +8,11 @@ import { TodoModule } from '../modules/todo/TodoModule';
  * Nothing else changes.
  *
  * Example:
- *   registry.register(new UserModule());
- *   registry.register(new AuthModule());
+ *   register(new UserModule());
+ *   register(new AuthModule());
  */
 export function createContainer(): ModuleRegistry {
   return new ModuleRegistry()
-    .register(new TodoModule());
+    .register(new TodoModule())
+    .register(new UserModule());
 }

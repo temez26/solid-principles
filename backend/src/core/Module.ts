@@ -1,5 +1,6 @@
 import type { Router } from 'express';
 import type { Pool } from 'pg';
+import type { IJwtService } from '../shared/domain/services/IJwtService';
 
 /**
  * DIP: High-level modules depend on this abstraction.
@@ -17,4 +18,5 @@ export interface IModule {
 /** Shared infrastructure passed to every module */
 export interface ModuleDeps {
   pool: Pool;
+  jwtService: IJwtService;
 }

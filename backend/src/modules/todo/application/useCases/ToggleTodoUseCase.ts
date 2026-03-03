@@ -1,7 +1,7 @@
-import type { UseCase } from './UseCase';
+import type { UseCase } from '../../../../shared/application/UseCase';
 import type { TodoRepository } from '../../domain/repositories/TodoRepository';
 import type { TodoResponseDTO } from '../dtos/TodoResponseDTO';
-import { NotFoundError } from '../../../../shared/errors/DomainError';
+import { NotFoundError } from '../../../../shared/domain/errors/DomainError';
 import { TodoMapper } from '../dtos/TodoMapper';
 
 export class ToggleTodoUseCase implements UseCase<string, TodoResponseDTO> {

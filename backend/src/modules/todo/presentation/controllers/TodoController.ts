@@ -3,6 +3,7 @@ import type { CreateTodoUseCase } from '../../application/useCases/CreateTodoUse
 import type { GetTodosUseCase } from '../../application/useCases/GetTodosUseCase';
 import type { ToggleTodoUseCase } from '../../application/useCases/ToggleTodoUseCase';
 import type { DeleteTodoUseCase } from '../../application/useCases/DeleteTodoUseCase';
+import { ValidationError } from '../../../../shared/domain/errors/DomainError';
 
 /**
  * SRP: Only translates HTTP ↔ Use Cases.
@@ -38,6 +39,7 @@ export class TodoController {
   ): Promise<void> => {
     try {
       const { title } = req.body;
+      if (typeof title !== 'string') throw new ValidationError('Invalid title');
       const todo = await this.createTodo.execute({ title });
       res.status(201).json({ data: todo });
     } catch (err) {

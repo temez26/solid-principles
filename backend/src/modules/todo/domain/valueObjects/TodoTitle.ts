@@ -1,4 +1,4 @@
-import { ValidationError } from '../../../../shared/errors/DomainError';
+import { ValidationError } from '../../../../shared/domain/errors/DomainError';
 
 /**
  * Value Object: Enforces domain rule — title cannot be empty.

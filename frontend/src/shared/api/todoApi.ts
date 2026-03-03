@@ -1,3 +1,5 @@
+﻿import { tokenStorage } from '../lib/tokenStorage';
+
 const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3001/api';
 
 export interface TodoDTO {
@@ -15,8 +17,17 @@ async function request<T>(
   path: string,
   options?: RequestInit,
 ): Promise<T> {
+  const token = tokenStorage.get();
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
+
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
   const res = await fetch(`${BASE_URL}${path}`, {
-    headers: { 'Content-Type': 'application/json' },
+    headers,
     ...options,
   });
 
@@ -25,7 +36,6 @@ async function request<T>(
     throw new Error(body.message ?? `Request failed: ${res.status}`);
   }
 
-  // 204 No Content
   if (res.status === 204) return undefined as T;
 
   const json: ApiResponse<T> = await res.json();

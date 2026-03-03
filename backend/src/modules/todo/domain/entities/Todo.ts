@@ -1,4 +1,4 @@
-import { UniqueId } from '../valueObjects/UniqueId';
+import { UniqueId } from '../../../../shared/domain/valueObjects/UniqueId';
 import { TodoTitle } from '../valueObjects/TodoTitle';
 import { TodoStatus } from '../valueObjects/TodoStatus';
 

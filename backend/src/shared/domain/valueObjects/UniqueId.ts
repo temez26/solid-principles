@@ -7,6 +7,13 @@ import { randomUUID } from 'crypto';
 export class UniqueId {
   private readonly value: string;
 
+  private static readonly UUID_REGEX =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+  static isValid(id: string): boolean {
+    return UniqueId.UUID_REGEX.test(id);
+  }  
+
   private constructor(value: string) {
     this.value = value;
   }
