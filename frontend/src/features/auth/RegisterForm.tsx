@@ -2,7 +2,7 @@
 import { Input } from '../../shared/ui/Input/Input';
 import { Button } from '../../shared/ui/Button/Button';
 import { Card } from '../../shared/ui/Card/Card';
-import { useAuthStore } from '../../entities/user';
+import { useAuthRepository } from '../../entities/user';
 import styles from './AuthForm.module.css';
 
 interface RegisterFormProps {
@@ -16,11 +16,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
   const [confirmPassword, setConfirmPassword] = useState('');
   const [localError, setLocalError] = useState<string | null>(null);
 
-  const register = useAuthStore((s) => s.register);
-  const loading = useAuthStore((s) => s.loading);
-  const error = useAuthStore((s) => s.error);
-  const clearError = useAuthStore((s) => s.clearError);
-
+  const { register, loading, error, clearError } = useAuthRepository();
   const displayError = localError ?? error;
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -31,7 +27,6 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
       setLocalError('Passwords do not match');
       return;
     }
-
     if (password.length < 6) {
       setLocalError('Password must be at least 6 characters');
       return;
@@ -40,7 +35,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
     try {
       await register(username.trim(), email.trim(), password);
     } catch {
-      // error is set in store
+      // error is set in repository
     }
   };
 
@@ -63,10 +58,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
             type="text"
             placeholder="Username"
             value={username}
-            onChange={(e) => {
-              setUsername(e.target.value);
-              handleChange();
-            }}
+            onChange={(e) => { setUsername(e.target.value); handleChange(); }}
             required
           />
           <Input
@@ -74,10 +66,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
             type="email"
             placeholder="Email"
             value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              handleChange();
-            }}
+            onChange={(e) => { setEmail(e.target.value); handleChange(); }}
             required
           />
           <Input
@@ -85,10 +74,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
             type="password"
             placeholder="Password"
             value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-              handleChange();
-            }}
+            onChange={(e) => { setPassword(e.target.value); handleChange(); }}
             required
           />
           <Input
@@ -96,10 +82,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
             type="password"
             placeholder="Confirm Password"
             value={confirmPassword}
-            onChange={(e) => {
-              setConfirmPassword(e.target.value);
-              handleChange();
-            }}
+            onChange={(e) => { setConfirmPassword(e.target.value); handleChange(); }}
             required
           />
           <Button type="submit" variant="primary" disabled={loading}>

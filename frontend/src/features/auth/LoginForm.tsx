@@ -2,7 +2,7 @@
 import { Input } from '../../shared/ui/Input/Input';
 import { Button } from '../../shared/ui/Button/Button';
 import { Card } from '../../shared/ui/Card/Card';
-import { useAuthStore } from '../../entities/user';
+import { useAuthRepository } from '../../entities/user';
 import styles from './AuthForm.module.css';
 
 interface LoginFormProps {
@@ -12,17 +12,14 @@ interface LoginFormProps {
 export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const login = useAuthStore((s) => s.login);
-  const loading = useAuthStore((s) => s.loading);
-  const error = useAuthStore((s) => s.error);
-  const clearError = useAuthStore((s) => s.clearError);
+  const { login, loading, error, clearError } = useAuthRepository();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await login(email.trim(), password);
     } catch {
-      // error is set in store
+      // error is set in repository
     }
   };
 
@@ -40,10 +37,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister }) => {
             type="email"
             placeholder="Email"
             value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              clearError();
-            }}
+            onChange={(e) => { setEmail(e.target.value); clearError(); }}
             required
           />
           <Input
@@ -51,10 +45,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister }) => {
             type="password"
             placeholder="Password"
             value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-              clearError();
-            }}
+            onChange={(e) => { setPassword(e.target.value); clearError(); }}
             required
           />
           <Button type="submit" variant="primary" disabled={loading}>

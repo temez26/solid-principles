@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAuthStore } from '../../entities/user';
+import { useAuthRepository } from '../../entities/user';
 import { AuthPage } from '../../pages/auth/AuthPage';
 
 interface AuthGuardProps {
@@ -7,8 +7,7 @@ interface AuthGuardProps {
 }
 
 export const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
-  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
-  const loading = useAuthStore((s) => s.loading);
+  const { isAuthenticated, loading } = useAuthRepository();
 
   if (loading) {
     return (
