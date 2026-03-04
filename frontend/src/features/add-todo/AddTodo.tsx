@@ -13,10 +13,9 @@ export const AddTodo: React.FC = () => {
     e.preventDefault();
     const trimmed = title.trim();
     if (!trimmed) return;
-
-    // The store's add() now calls the API; backend generates the ID
+    
     add({
-      id: '',          // placeholder — overwritten by API response
+      id: '',      
       title: trimmed,
       completed: false,
       createdAt: Date.now(),

@@ -1,12 +1,11 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { AddTodo } from '../../features/add-todo/AddTodo';
-import { FilterTodos } from '../../features/filter-todos/FilterTodos';
-import { applyFilter } from '../../features/filter-todos/filterStrategies';
-import { TodoList } from '../../widgets/todo-list/TodoList';
-import { Input } from '../../shared/ui/Input/Input';
+import { AddTodo } from '../../features/add-todo';
+import { FilterTodos, applyFilter } from '../../features/filter-todos';
+import { TodoList } from '../../widgets/todo-list';
+import { Input } from '../../shared/ui/Input';
 import { useTodoStore, type TodoFilter } from '../../entities/todo';
-import { useDeleteTodo } from '../../features/delete-todo/deleteTodo';
-import { useToggleTodo } from '../../features/toggle-todo/toggleTodo';
+import { useDeleteTodo } from '../../features/delete-todo';
+import { useToggleTodo } from '../../features/toggle-todo';
 import styles from './TodosPage.module.css';
 
 export const TodosPage: React.FC = () => {

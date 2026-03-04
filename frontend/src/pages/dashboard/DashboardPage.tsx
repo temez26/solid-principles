@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import { StatsPanel } from '../../widgets/stats-panel/StatsPanel';
-import { TodoList } from '../../widgets/todo-list/TodoList';
-import { Card } from '../../shared/ui/Card/Card';
+import { StatsPanel } from '../../widgets/stats-panel';
+import { TodoList } from '../../widgets/todo-list';
+import { Card } from '../../shared/ui/Card';
 import { useTodoStore } from '../../entities/todo';
-import { useDeleteTodo } from '../../features/delete-todo/deleteTodo';
-import { useToggleTodo } from '../../features/toggle-todo/toggleTodo';
+import { useDeleteTodo } from '../../features/delete-todo';
+import { useToggleTodo } from '../../features/toggle-todo';
 import styles from './DashboardPage.module.css';
 
 export const DashboardPage: React.FC = () => {

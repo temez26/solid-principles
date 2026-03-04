@@ -1,7 +1,6 @@
 ﻿import React, { useEffect } from 'react';
-import { ThemeProvider } from './providers/ThemeProvider';
+import { ThemeProvider, AuthGuard } from './providers';
 import { AppRouter } from './router';
-import { AuthGuard } from '../shared/ui/AuthGuard/AuthGuard';
 import { useAuthStore } from '../entities/user';
 
 const AppContent: React.FC = () => {

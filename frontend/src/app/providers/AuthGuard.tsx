@@ -1,6 +1,6 @@
-﻿import React from 'react';
-import { useAuthStore } from '../../../entities/user';
-import { AuthPage } from '../../../pages/auth/AuthPage';
+import React from 'react';
+import { useAuthStore } from '../../entities/user';
+import { AuthPage } from '../../pages/auth/AuthPage';
 
 interface AuthGuardProps {
   children: React.ReactNode;

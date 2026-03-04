@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Card } from '../../shared/ui/Card/Card';
-import { Toggle } from '../../shared/ui/Toggle/Toggle';
+import { Card } from '../../shared/ui/Card';
+import { Toggle } from '../../shared/ui/Toggle';
 import { useTheme } from '../../shared/hooks/useTheme';
 import styles from './SettingsPage.module.css';
 

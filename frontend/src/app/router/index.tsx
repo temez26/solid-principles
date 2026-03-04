@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { DashboardPage } from '../../pages/dashboard/DashboardPage';
 import { TodosPage } from '../../pages/todos/TodosPage';
 import { SettingsPage } from '../../pages/settings/SettingsPage';
-import { Navbar } from '../../widgets/navbar/Navbar';
+import { Navbar } from '../../widgets/navbar';
 
 export const AppRouter: React.FC = () => {
   return (
