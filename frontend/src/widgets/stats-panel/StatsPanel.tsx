@@ -1,34 +1,46 @@
 import React from 'react';
-import { IoCheckmarkDone, IoList, IoTime } from 'react-icons/io5';
-import { Card } from '../../shared/ui/Card/Card';
-import { useTodoStore } from '../../entities/todo';
+import { useTodoRepository } from '../../entities/todo';
+import { IoListOutline, IoFlameOutline, IoCheckmarkDoneOutline, IoTrendingUpOutline } from 'react-icons/io5';
 import styles from './StatsPanel.module.css';
 
 export const StatsPanel: React.FC = () => {
-  const todos = useTodoStore((s) => s.todos);
+  const { todos } = useTodoRepository();
+
   const total = todos.length;
   const completed = todos.filter((t) => t.completed).length;
-  const pending = total - completed;
-
-  const stats = [
-    { label: 'Total', value: total, icon: <IoList size={22} />, color: 'var(--color-accent)' },
-    { label: 'Completed', value: completed, icon: <IoCheckmarkDone size={22} />, color: 'var(--color-success)' },
-    { label: 'Pending', value: pending, icon: <IoTime size={22} />, color: '#ff9500' },
-  ];
+  const active = total - completed;
+  const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
 
   return (
-    <div className={styles.grid}>
-      {stats.map((s) => (
-        <Card key={s.label} className={styles.statCard}>
-          <div className={styles.iconWrap} style={{ color: s.color }}>
-            {s.icon}
-          </div>
-          <div className={styles.info}>
-            <span className={styles.value}>{s.value}</span>
-            <span className={styles.label}>{s.label}</span>
-          </div>
-        </Card>
-      ))}
+    <div className={styles.panel}>
+      <div className={styles.stat}>
+        <span className={styles.icon} style={{ color: 'var(--color-accent)' }}>
+          <IoListOutline />
+        </span>
+        <span className={styles.value}>{total}</span>
+        <span className={styles.label}>Total</span>
+      </div>
+      <div className={styles.stat}>
+        <span className={styles.icon} style={{ color: '#f59e0b' }}>
+          <IoFlameOutline />
+        </span>
+        <span className={styles.value}>{active}</span>
+        <span className={styles.label}>Active</span>
+      </div>
+      <div className={styles.stat}>
+        <span className={styles.icon} style={{ color: '#10b981' }}>
+          <IoCheckmarkDoneOutline />
+        </span>
+        <span className={styles.value}>{completed}</span>
+        <span className={styles.label}>Completed</span>
+      </div>
+      <div className={styles.stat}>
+        <span className={styles.icon} style={{ color: '#8b5cf6' }}>
+          <IoTrendingUpOutline />
+        </span>
+        <span className={styles.value}>{percentage}%</span>
+        <span className={styles.label}>Progress</span>
+      </div>
     </div>
   );
 };

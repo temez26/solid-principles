@@ -3,6 +3,43 @@
   gap: 10px;
 }
 
-.form input {
+.input {
   flex: 1;
+  padding: 12px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-family);
+  font-size: 0.95rem;
+  background: var(--color-surface-solid);
+  color: var(--color-text);
+  outline: none;
+  transition: var(--transition);
+}
+
+.input::placeholder {
+  color: var(--color-text-secondary);
+}
+
+.input:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.12);
+}
+
+.form button[type="submit"] {
+  padding: 10px 20px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-family);
+  font-weight: 500;
+  font-size: 0.9rem;
+  background: var(--color-accent);
+  color: #fff;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.form button[type="submit"]:hover {
+  background: var(--color-accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
 }

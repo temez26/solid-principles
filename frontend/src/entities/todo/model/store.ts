@@ -3,13 +3,6 @@ import type { Todo } from './types';
 import type { TodoRepository } from './repository';
 import { todoApi } from '../../../shared/api/todoApi';
 
-interface TodoState extends TodoRepository {
-  todos: Todo[];
-  loading: boolean;
-  error: string | null;
-  fetchAll: () => Promise<void>;
-}
-
 function dtoToTodo(dto: { id: string; title: string; completed: boolean; createdAt: string }): Todo {
   return {
     id: dto.id,
@@ -19,7 +12,12 @@ function dtoToTodo(dto: { id: string; title: string; completed: boolean; created
   };
 }
 
-export const useTodoStore = create<TodoState>()((set, get) => ({
+/**
+ * Concrete implementation of TodoRepository using Zustand + REST API.
+ * This is the ONLY place that knows about Zustand and the API.
+ * All consumers depend on the TodoRepository abstraction via Context.
+ */
+const useTodoStoreInternal = create<TodoRepository>()((set, get) => ({
   todos: [],
   loading: false,
   error: null,
@@ -71,8 +69,7 @@ export const useTodoStore = create<TodoState>()((set, get) => ({
     }
   },
 
-  async update(id: string, changes: Partial<Omit<Todo, 'id'>>) {
-    // For now, handle locally — extend API later if needed
+  update(id: string, changes: Partial<Omit<Todo, 'id'>>) {
     set((state) => ({
       todos: state.todos.map((t) =>
         t.id === id ? { ...t, ...changes } : t,
@@ -80,3 +77,11 @@ export const useTodoStore = create<TodoState>()((set, get) => ({
     }));
   },
 }));
+
+/**
+ * Hook that bridges Zustand store to TodoRepository interface.
+ * Used ONLY by the TodoRepositoryProvider in app layer.
+ */
+export const useZustandTodoRepository = (): TodoRepository => {
+  return useTodoStoreInternal();
+};

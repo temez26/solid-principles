@@ -24,3 +24,17 @@
 .search {
   width: 200px;
 }
+
+.loading {
+  text-align: center;
+  padding: 60px 24px;
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+}
+
+.error {
+  text-align: center;
+  padding: 60px 24px;
+  color: var(--color-danger);
+  font-size: 0.95rem;
+}

@@ -1,3 +1,11 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
 .filters {
   display: flex;
   gap: 8px;
@@ -25,4 +33,26 @@
   background: var(--color-accent);
   color: #fff;
   border-color: var(--color-accent);
+}
+
+.search {
+  width: 200px;
+  padding: 8px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-family);
+  font-size: 0.85rem;
+  background: var(--color-surface-solid);
+  color: var(--color-text);
+  outline: none;
+  transition: var(--transition);
+}
+
+.search::placeholder {
+  color: var(--color-text-secondary);
+}
+
+.search:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.12);
 }

@@ -1,6 +1,6 @@
-import { useTodoStore } from '../../entities/todo';
+import { useTodoRepository } from '../../entities/todo';
 
-/** SRP: single-purpose hook for deleting a todo */
-export function useDeleteTodo() {
-  return useTodoStore((s) => s.remove);
-}
+export const useDeleteTodo = () => {
+  const { remove } = useTodoRepository();
+  return remove;
+};

@@ -1,53 +1,37 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import { AddTodo } from '../../features/add-todo';
-import { FilterTodos, applyFilter } from '../../features/filter-todos';
-import { TodoList } from '../../widgets/todo-list';
-import { Input } from '../../shared/ui/Input';
-import { useTodoStore, type TodoFilter } from '../../entities/todo';
+import React, { useEffect, useState } from 'react';
+import { useTodoRepository } from '../../entities/todo';
+import type { Todo } from '../../entities/todo';
+import { AddTodo } from '../../features/add-todo/AddTodo';
 import { useDeleteTodo } from '../../features/delete-todo';
 import { useToggleTodo } from '../../features/toggle-todo';
+import { FilterTodos } from '../../features/filter-todos';
+import { TodoList } from '../../widgets/todo-list/TodoList';
+import { StatsPanel } from '../../widgets/stats-panel/StatsPanel';
 import styles from './TodosPage.module.css';
 
 export const TodosPage: React.FC = () => {
-  const todos = useTodoStore((s) => s.todos);
-  const fetchAll = useTodoStore((s) => s.fetchAll);
+  const { fetchAll, loading, error } = useTodoRepository();
   const deleteTodo = useDeleteTodo();
   const toggleTodo = useToggleTodo();
-
-  const [filter, setFilter] = useState<TodoFilter>('all');
-  const [search, setSearch] = useState('');
+  const [filtered, setFiltered] = useState<Todo[] | undefined>(undefined);
 
   useEffect(() => {
     fetchAll();
   }, [fetchAll]);
 
-  const visible = useMemo(() => {
-    let result = applyFilter(todos, filter);
-    if (search.trim()) {
-      const q = search.toLowerCase();
-      result = result.filter((t) => t.title.toLowerCase().includes(q));
-    }
-    return result;
-  }, [todos, filter, search]);
+  if (loading) return <div className={styles.loading}>Loading todos...</div>;
+  if (error) return <div className={styles.error}>Error: {error}</div>;
 
   return (
     <div className={styles.page}>
-      <h1 className={styles.heading}>Todos</h1>
+      <h1>Todos</h1>
+      <StatsPanel />
       <AddTodo />
-      <div className={styles.controls}>
-        <FilterTodos current={filter} onChange={setFilter} />
-        <Input
-          placeholder="Search..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className={styles.search}
-        />
-      </div>
+      <FilterTodos onFilter={setFiltered} />
       <TodoList
-        todos={visible}
+        filteredTodos={filtered}
         onToggle={toggleTodo}
         onDelete={deleteTodo}
-        emptyMessage="Nothing matches your search"
       />
     </div>
   );

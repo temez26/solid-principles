@@ -1,33 +1,26 @@
 import React from 'react';
+import { useTodoRepository, TodoItem } from '../../entities/todo';
 import type { Todo } from '../../entities/todo';
-import { TodoItem } from '../../entities/todo';
 import styles from './TodoList.module.css';
 
 interface TodoListProps {
-  todos: Todo[];
+  filteredTodos?: Todo[];
   onToggle: (id: string) => void;
   onDelete: (id: string) => void;
-  emptyMessage?: string;
 }
 
-export const TodoList: React.FC<TodoListProps> = ({
-  todos,
-  onToggle,
-  onDelete,
-  emptyMessage = 'No todos yet',
-}) => {
-  if (todos.length === 0) {
-    return <p className={styles.empty}>{emptyMessage}</p>;
-  }
+export const TodoList: React.FC<TodoListProps> = ({ filteredTodos, onToggle, onDelete }) => {
+  const { todos } = useTodoRepository();
+  const displayTodos = filteredTodos ?? todos;
 
   return (
     <div className={styles.list}>
-      {todos.map((todo) => (
+      {displayTodos.map((todo) => (
         <TodoItem
           key={todo.id}
           todo={todo}
-          onToggle={onToggle}
-          onDelete={onDelete}
+          onToggle={() => onToggle(todo.id)}
+          onDelete={() => onDelete(todo.id)}
         />
       ))}
     </div>

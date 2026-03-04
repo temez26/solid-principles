@@ -1,4 +1,3 @@
-// filepath: src/app/router/index.tsx
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { DashboardPage } from '../../pages/dashboard/DashboardPage';

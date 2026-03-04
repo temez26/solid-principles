@@ -1,5 +1,5 @@
 ﻿import React, { useEffect } from 'react';
-import { ThemeProvider, AuthGuard } from './providers';
+import { ThemeProvider, AuthGuard, TodoProvider } from './providers';
 import { AppRouter } from './router';
 import { useAuthStore } from '../entities/user';
 
@@ -12,7 +12,9 @@ const AppContent: React.FC = () => {
 
   return (
     <AuthGuard>
-      <AppRouter />
+      <TodoProvider>
+        <AppRouter />
+      </TodoProvider>
     </AuthGuard>
   );
 };
