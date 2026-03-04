@@ -1,10 +1,10 @@
 ﻿import React, { useEffect } from 'react';
-import { ThemeProvider, AuthGuard, TodoProvider } from './providers';
+import { ThemeProvider, AuthGuard, AuthProvider, TodoProvider } from './providers';
 import { AppRouter } from './router';
-import { useAuthStore } from '../entities/user';
+import { useAuthRepository } from '../entities/user';
 
 const AppContent: React.FC = () => {
-  const checkAuth = useAuthStore((s) => s.checkAuth);
+  const { checkAuth } = useAuthRepository();
 
   useEffect(() => {
     checkAuth();
@@ -22,7 +22,9 @@ const AppContent: React.FC = () => {
 export const App: React.FC = () => {
   return (
     <ThemeProvider>
-      <AppContent />
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
     </ThemeProvider>
   );
 };

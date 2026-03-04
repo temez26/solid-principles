@@ -1,21 +1,10 @@
 ﻿import { create } from 'zustand';
 import type { User } from './types';
+import type { AuthRepository } from './repository';
 import { authApi, type UserDTO } from '../../../shared/api/authApi';
 import { tokenStorage } from '../../../shared/lib/tokenStorage';
 
-interface AuthState {
-  user: User | null;
-  token: string | null;
-  loading: boolean;
-  error: string | null;
-  isAuthenticated: boolean;
-
-  register: (username: string, email: string, password: string) => Promise<void>;
-  login: (email: string, password: string) => Promise<void>;
-  logout: () => void;
-  checkAuth: () => Promise<void>;
-  clearError: () => void;
-}
+interface AuthState extends AuthRepository {}
 
 function dtoToUser(dto: UserDTO): User {
   return {
@@ -29,10 +18,15 @@ function dtoToUser(dto: UserDTO): User {
 
 const initialToken = tokenStorage.get();
 
-export const useAuthStore = create<AuthState>()((set) => ({
+/**
+ * Concrete implementation of AuthRepository using Zustand + REST API.
+ * This is the ONLY place that knows about Zustand and the auth API.
+ * All consumers depend on the AuthRepository abstraction via Context.
+ */
+const useAuthStoreInternal = create<AuthState>()((set) => ({
   user: null,
   token: initialToken,
-  loading: !!initialToken,   
+  loading: !!initialToken,
   error: null,
   isAuthenticated: false,
 
@@ -72,12 +66,7 @@ export const useAuthStore = create<AuthState>()((set) => ({
 
   logout() {
     tokenStorage.remove();
-    set({
-      user: null,
-      token: null,
-      isAuthenticated: false,
-      error: null,
-    });
+    set({ user: null, token: null, isAuthenticated: false, error: null });
   },
 
   async checkAuth() {
@@ -86,24 +75,13 @@ export const useAuthStore = create<AuthState>()((set) => ({
       set({ isAuthenticated: false, user: null, token: null, loading: false });
       return;
     }
-
     set({ loading: true });
     try {
       const userDto = await authApi.getMe(token);
-      set({
-        user: dtoToUser(userDto),
-        token,
-        isAuthenticated: true,
-        loading: false,
-      });
+      set({ user: dtoToUser(userDto), token, isAuthenticated: true, loading: false });
     } catch {
       tokenStorage.remove();
-      set({
-        user: null,
-        token: null,
-        isAuthenticated: false,
-        loading: false,
-      });
+      set({ user: null, token: null, isAuthenticated: false, loading: false });
     }
   },
 
@@ -111,3 +89,9 @@ export const useAuthStore = create<AuthState>()((set) => ({
     set({ error: null });
   },
 }));
+
+/**
+ * Public bridge: exposes the Zustand store as an AuthRepository.
+ * Import ONLY in AuthProvider.
+ */
+export const useZustandAuthRepository = (): AuthRepository => useAuthStoreInternal();
