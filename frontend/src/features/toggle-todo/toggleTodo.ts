@@ -1,6 +1,6 @@
-import { useTodoStore } from '../../entities/todo';
+import { useTodoRepository } from '../../entities/todo';
 
-/** SRP: single-purpose hook for toggling a todo */
-export function useToggleTodo() {
-  return useTodoStore((s) => s.toggle);
-}
+export const useToggleTodo = () => {
+  const { toggle } = useTodoRepository();
+  return toggle;
+};

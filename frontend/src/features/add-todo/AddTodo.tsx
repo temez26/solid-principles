@@ -1,41 +1,38 @@
 import React, { useState } from 'react';
-import { IoAdd } from 'react-icons/io5';
-import { Input } from '../../shared/ui/Input/Input';
-import { Button } from '../../shared/ui/Button/Button';
-import { useTodoStore } from '../../entities/todo';
+import { useTodoRepository } from '../../entities/todo';
+import type { Todo } from '../../entities/todo';
 import styles from './AddTodo.module.css';
 
 export const AddTodo: React.FC = () => {
   const [title, setTitle] = useState('');
-  const add = useTodoStore((s) => s.add);
+  const { add } = useTodoRepository();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const trimmed = title.trim();
     if (!trimmed) return;
-    
-    add({
-      id: '',      
+
+    const newTodo: Todo = {
+      id: crypto.randomUUID(),
       title: trimmed,
       completed: false,
       createdAt: Date.now(),
-    });
+    };
 
+    await add(newTodo);
     setTitle('');
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
-      <Input
-        fullWidth
-        placeholder="Add a new todo..."
+    <form onSubmit={handleSubmit} className={styles.form}>
+      <input
+        type="text"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
+        placeholder="Add a new todo..."
+        className={styles.input}
       />
-      <Button type="submit" variant="primary">
-        <IoAdd size={18} />
-        Add
-      </Button>
+      <button type="submit">Add</button>
     </form>
   );
 };

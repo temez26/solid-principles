@@ -1,30 +1,50 @@
-import React from 'react';
-import type { TodoFilter } from '../../entities/todo';
+import React, { useState, useEffect } from 'react';
+import { useTodoRepository } from '../../entities/todo';
+import type { Todo } from '../../entities/todo';
+import { applyFilter, applySearch } from './filterStrategies';
 import styles from './FilterTodos.module.css';
 
+type FilterType = 'all' | 'active' | 'completed';
+
 interface FilterTodosProps {
-  current: TodoFilter;
-  onChange: (filter: TodoFilter) => void;
+  onFilter: (filtered: Todo[]) => void;
 }
 
-const filters: { label: string; value: TodoFilter }[] = [
-  { label: 'All', value: 'all' },
-  { label: 'Active', value: 'active' },
-  { label: 'Completed', value: 'completed' },
-];
+export const FilterTodos: React.FC<FilterTodosProps> = ({ onFilter }) => {
+  const [activeFilter, setActiveFilter] = useState<FilterType>('all');
+  const [search, setSearch] = useState('');
+  const { todos } = useTodoRepository();
 
-export const FilterTodos: React.FC<FilterTodosProps> = ({ current, onChange }) => {
+  useEffect(() => {
+    const filtered = applyFilter(todos, activeFilter);
+    const searched = applySearch(filtered, search);
+    onFilter(searched);
+  }, [todos, activeFilter, search]);
+
+  const handleFilter = (type: FilterType) => {
+    setActiveFilter(type);
+  };
+
   return (
-    <div className={styles.filters}>
-      {filters.map((f) => (
-        <button
-          key={f.value}
-          className={`${styles.chip} ${current === f.value ? styles.active : ''}`}
-          onClick={() => onChange(f.value)}
-        >
-          {f.label}
-        </button>
-      ))}
+    <div className={styles.wrapper}>
+      <div className={styles.filters}>
+        {(['all', 'active', 'completed'] as FilterType[]).map((type) => (
+          <button
+            key={type}
+            className={`${styles.chip} ${activeFilter === type ? styles.active : ''}`}
+            onClick={() => handleFilter(type)}
+          >
+            {type.charAt(0).toUpperCase() + type.slice(1)}
+          </button>
+        ))}
+      </div>
+      <input
+        type="text"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        placeholder="Search todos..."
+        className={styles.search}
+      />
     </div>
   );
 };

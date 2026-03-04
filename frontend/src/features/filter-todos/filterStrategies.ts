@@ -19,6 +19,12 @@ export function applyFilter(todos: Todo[], filter: TodoFilter): Todo[] {
   return strategy(todos);
 }
 
+export function applySearch(todos: Todo[], query: string): Todo[] {
+  const trimmed = query.trim().toLowerCase();
+  if (!trimmed) return todos;
+  return todos.filter((t) => t.title.toLowerCase().includes(trimmed));
+}
+
 /** Easily extend: add 'overdue', 'today', etc. without touching above code */
 export function registerFilter(name: TodoFilter, strategy: FilterStrategy) {
   filterStrategies[name] = strategy;
