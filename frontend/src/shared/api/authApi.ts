@@ -1,4 +1,4 @@
-﻿const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3001/api';
+﻿import { httpClient } from './httpClient';
 
 export interface UserDTO {
   id: string;
@@ -13,43 +13,13 @@ export interface AuthResponseDTO {
   user: UserDTO;
 }
 
-interface ApiResponse<T> {
+interface AuthApiResponse<T> {
   user: T;
 }
 
-async function request<T>(
-  path: string,
-  options?: RequestInit,
-): Promise<T> {
-  const res = await fetch(`${BASE_URL}${path}`, {
-    headers: { 'Content-Type': 'application/json' },
-    ...options,
-  });
-
-  if (!res.ok) {
-    const body = await res.json().catch(() => ({}));
-    throw new Error(body.message ?? `Request failed: ${res.status}`);
-  }
-
-  const json: ApiResponse<T> = await res.json();
+async function request<T>(path: string, options?: RequestInit): Promise<T> {
+  const json = await httpClient<AuthApiResponse<T>>(path, options);
   return json.user;
-}
-
-async function requestRaw<T>(
-  path: string,
-  options?: RequestInit,
-): Promise<T> {
-  const res = await fetch(`${BASE_URL}${path}`, {
-    headers: { 'Content-Type': 'application/json' },
-    ...options,
-  });
-
-  if (!res.ok) {
-    const body = await res.json().catch(() => ({}));
-    throw new Error(body.message ?? `Request failed: ${res.status}`);
-  }
-
-  return res.json() as Promise<T>;
 }
 
 export const authApi = {
@@ -66,7 +36,7 @@ export const authApi = {
     }),
 
   getMe: (token: string) =>
-    requestRaw<UserDTO>('/users/me', {
+    httpClient<UserDTO>('/users/me', {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,

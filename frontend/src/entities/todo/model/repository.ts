@@ -13,7 +13,7 @@ export interface TodoRepository {
   error: string | null;
   fetchAll(): Promise<void>;
   getAll(): Todo[];
-  add(todo: Todo): Promise<void>;
+  add(title: string): Promise<void>;
   remove(id: string): Promise<void>;
   toggle(id: string): Promise<void>;
   update(id: string, changes: Partial<Omit<Todo, 'id'>>): void;

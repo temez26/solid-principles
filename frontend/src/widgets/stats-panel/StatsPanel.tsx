@@ -1,15 +1,15 @@
 import React from 'react';
-import { useTodoRepository } from '../../entities/todo';
+import type { Todo } from '../../entities/todo';
+import { computeTodoStats } from '../../entities/todo';
 import { IoListOutline, IoFlameOutline, IoCheckmarkDoneOutline, IoTrendingUpOutline } from 'react-icons/io5';
 import styles from './StatsPanel.module.css';
 
-export const StatsPanel: React.FC = () => {
-  const { todos } = useTodoRepository();
+interface StatsPanelProps {
+  todos: Todo[];
+}
 
-  const total = todos.length;
-  const completed = todos.filter((t) => t.completed).length;
-  const active = total - completed;
-  const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+export const StatsPanel: React.FC<StatsPanelProps> = ({ todos }) => {
+  const { total, active, completed, percentage } = computeTodoStats(todos);
 
   return (
     <div className={styles.panel}>

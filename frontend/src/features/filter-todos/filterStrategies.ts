@@ -26,6 +26,3 @@ export function applySearch(todos: Todo[], query: string): Todo[] {
 }
 
 /** Easily extend: add 'overdue', 'today', etc. without touching above code */
-export function registerFilter(name: TodoFilter, strategy: FilterStrategy) {
-  filterStrategies[name] = strategy;
-}

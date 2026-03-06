@@ -36,9 +36,9 @@ const useTodoStoreInternal = create<TodoRepository>()((set, get) => ({
     return get().todos;
   },
 
-  async add(todo: Todo) {
+  async add(title: string) {
     try {
-      const dto = await todoApi.create(todo.title);
+      const dto = await todoApi.create(title);
       const created = dtoToTodo(dto);
       set((state) => ({ todos: [created, ...state.todos] }));
     } catch (err) {

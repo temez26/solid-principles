@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useTodoRepository } from '../../entities/todo';
-import type { Todo } from '../../entities/todo';
 import styles from './AddTodo.module.css';
 
 export const AddTodo: React.FC = () => {
@@ -12,14 +11,7 @@ export const AddTodo: React.FC = () => {
     const trimmed = title.trim();
     if (!trimmed) return;
 
-    const newTodo: Todo = {
-      id: crypto.randomUUID(),
-      title: trimmed,
-      completed: false,
-      createdAt: Date.now(),
-    };
-
-    await add(newTodo);
+    await add(trimmed);
     setTitle('');
   };
 

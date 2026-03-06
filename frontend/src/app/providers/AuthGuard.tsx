@@ -1,6 +1,6 @@
 import React from 'react';
+import { Navigate } from 'react-router-dom';
 import { useAuthRepository } from '../../entities/user';
-import { AuthPage } from '../../pages/auth/AuthPage';
 
 interface AuthGuardProps {
   children: React.ReactNode;
@@ -25,7 +25,7 @@ export const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   }
 
   if (!isAuthenticated) {
-    return <AuthPage />;
+    return <Navigate to="/auth" replace />;
   }
 
   return <>{children}</>;
