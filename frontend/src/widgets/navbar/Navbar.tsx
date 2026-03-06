@@ -6,7 +6,8 @@ import {
   IoSettingsOutline,
   IoLogOutOutline,
 } from 'react-icons/io5';
-import { useAuthRepository } from '../../entities/user';
+import { useAuthState } from '../../entities/user';
+import { useLogout } from '../../features/logout';
 import styles from './Navbar.module.css';
 
 const links = [
@@ -16,7 +17,8 @@ const links = [
 ];
 
 export const Navbar: React.FC = () => {
-  const { user, logout } = useAuthRepository();
+  const { user } = useAuthState();
+  const logout = useLogout();
 
   return (
     <nav className={styles.nav}>

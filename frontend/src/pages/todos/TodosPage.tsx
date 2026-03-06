@@ -1,23 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { useTodoRepository } from '../../entities/todo';
-import type { Todo } from '../../entities/todo';
-import { AddTodo } from '../../features/add-todo/AddTodo';
-import { useDeleteTodo } from '../../features/delete-todo';
-import { useToggleTodo } from '../../features/toggle-todo';
-import { FilterTodos } from '../../features/filter-todos';
-import { TodoList } from '../../widgets/todo-list/TodoList';
-import { StatsPanel } from '../../widgets/stats-panel/StatsPanel';
+import React from 'react';
+import { useFetchTodos } from '../../features/fetch-todos';
+import { AddTodo } from '../../features/add-todo';
+import { useTodoActions } from '../../entities/todo';
+import { FilterTodos, useFilteredTodos } from '../../features/filter-todos';
+import { TodoList } from '../../widgets/todo-list';
+import { StatsPanel } from '../../widgets/stats-panel';
 import styles from './TodosPage.module.css';
 
 export const TodosPage: React.FC = () => {
-  const { fetchAll, loading, error } = useTodoRepository();
-  const deleteTodo = useDeleteTodo();
-  const toggleTodo = useToggleTodo();
-  const [filtered, setFiltered] = useState<Todo[] | undefined>(undefined);
-
-  useEffect(() => {
-    fetchAll();
-  }, [fetchAll]);
+  const { todos, loading, error } = useFetchTodos();
+  const { remove, toggle } = useTodoActions();
+  const { filtered, activeFilter, setActiveFilter, search, setSearch } = useFilteredTodos(todos);
 
   if (loading) return <div className={styles.loading}>Loading todos...</div>;
   if (error) return <div className={styles.error}>Error: {error}</div>;
@@ -25,13 +18,18 @@ export const TodosPage: React.FC = () => {
   return (
     <div className={styles.page}>
       <h1>Todos</h1>
-      <StatsPanel />
+      <StatsPanel todos={todos} />
       <AddTodo />
-      <FilterTodos onFilter={setFiltered} />
+      <FilterTodos
+        activeFilter={activeFilter}
+        onFilterChange={setActiveFilter}
+        search={search}
+        onSearchChange={setSearch}
+      />
       <TodoList
-        filteredTodos={filtered}
-        onToggle={toggleTodo}
-        onDelete={deleteTodo}
+        todos={filtered}
+        onToggle={toggle}
+        onDelete={remove}
       />
     </div>
   );

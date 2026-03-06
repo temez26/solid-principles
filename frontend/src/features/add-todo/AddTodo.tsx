@@ -1,25 +1,17 @@
 import React, { useState } from 'react';
-import { useTodoRepository } from '../../entities/todo';
-import type { Todo } from '../../entities/todo';
+import { useTodoActions } from '../../entities/todo';
 import styles from './AddTodo.module.css';
 
 export const AddTodo: React.FC = () => {
   const [title, setTitle] = useState('');
-  const { add } = useTodoRepository();
+  const { add } = useTodoActions();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const trimmed = title.trim();
     if (!trimmed) return;
 
-    const newTodo: Todo = {
-      id: crypto.randomUUID(),
-      title: trimmed,
-      completed: false,
-      createdAt: Date.now(),
-    };
-
-    await add(newTodo);
+    await add(trimmed);
     setTitle('');
   };
 

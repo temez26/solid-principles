@@ -1,30 +1,31 @@
 ﻿import React, { useEffect } from 'react';
-import { ThemeProvider, AuthGuard, AuthProvider, TodoProvider } from './providers';
+import { BrowserRouter } from 'react-router-dom';
+import { ThemeProvider, AuthProvider, TodoProvider } from './providers';
 import { AppRouter } from './router';
-import { useAuthRepository } from '../entities/user';
+import { useAuthActions } from '../entities/user';
 
 const AppContent: React.FC = () => {
-  const { checkAuth } = useAuthRepository();
+  const { checkAuth } = useAuthActions();
 
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
 
   return (
-    <AuthGuard>
-      <TodoProvider>
-        <AppRouter />
-      </TodoProvider>
-    </AuthGuard>
+    <TodoProvider>
+      <AppRouter />
+    </TodoProvider>
   );
 };
 
 export const App: React.FC = () => {
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <AppContent />
-      </AuthProvider>
-    </ThemeProvider>
+    <BrowserRouter>
+      <ThemeProvider>
+        <AuthProvider>
+          <AppContent />
+        </AuthProvider>
+      </ThemeProvider>
+    </BrowserRouter>
   );
 };

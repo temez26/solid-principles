@@ -1,13 +1,13 @@
 import React from 'react';
-import { useAuthRepository } from '../../entities/user';
-import { AuthPage } from '../../pages/auth/AuthPage';
+import { Navigate } from 'react-router-dom';
+import { useAuthState } from '../../entities/user';
 
 interface AuthGuardProps {
   children: React.ReactNode;
 }
 
 export const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
-  const { isAuthenticated, loading } = useAuthRepository();
+  const { isAuthenticated, loading } = useAuthState();
 
   if (loading) {
     return (
@@ -25,7 +25,7 @@ export const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   }
 
   if (!isAuthenticated) {
-    return <AuthPage />;
+    return <Navigate to="/auth" replace />;
   }
 
   return <>{children}</>;

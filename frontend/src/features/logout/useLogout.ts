@@ -1,5 +1,5 @@
-﻿import { useAuthRepository } from '../../entities/user';
+﻿import { useAuthActions } from '../../entities/user';
 
 export function useLogout() {
-  return useAuthRepository().logout;
+  return useAuthActions().logout;
 }

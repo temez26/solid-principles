@@ -1,2 +1,3 @@
 export { FilterTodos } from './FilterTodos';
-export { applyFilter, applySearch, registerFilter } from './filterStrategies';
+export { useFilteredTodos } from './useFilteredTodos';
+export { applyFilter, applySearch } from './filterStrategies';

@@ -1,25 +1,52 @@
 import React, { createContext, useContext } from 'react';
-import type { TodoRepository } from './repository';
+import { useStore } from 'zustand';
+import type { StoreApi } from 'zustand/vanilla';
+import { useShallow } from 'zustand/shallow';
+import type { TodoRepository, TodoState, TodoActions } from './repository';
 
-const TodoRepositoryContext = createContext<TodoRepository | null>(null);
+const TodoStoreContext = createContext<StoreApi<TodoRepository> | null>(null);
 
-export const useTodoRepository = (): TodoRepository => {
-  const repo = useContext(TodoRepositoryContext);
-  if (!repo) {
-    throw new Error('useTodoRepository must be used within a TodoRepositoryProvider');
+function useTodoStore(): StoreApi<TodoRepository> {
+  const store = useContext(TodoStoreContext);
+  if (!store) {
+    throw new Error('useTodoStore must be used within a TodoStoreProvider');
   }
-  return repo;
-};
+  return store;
+}
+
+/** Subscribe to todo state only — re-renders only when state changes */
+export function useTodoState(): TodoState {
+  return useStore(useTodoStore(), useShallow((s) => ({
+    todos: s.todos,
+    loading: s.loading,
+    error: s.error,
+  })));
+}
+
+/** Subscribe to todo actions only — never re-renders (actions are stable) */
+export function useTodoActions(): TodoActions {
+  return useStore(useTodoStore(), useShallow((s) => ({
+    fetchAll: s.fetchAll,
+    add: s.add,
+    remove: s.remove,
+    toggle: s.toggle,
+  })));
+}
+
+/** Full repository access (backward compat) — re-renders on any change */
+export function useTodoRepository(): TodoRepository {
+  return useStore(useTodoStore());
+}
 
 interface Props {
-  repository: TodoRepository;
+  store: StoreApi<TodoRepository>;
   children: React.ReactNode;
 }
 
-export const TodoRepositoryProvider: React.FC<Props> = ({ repository, children }) => {
+export const TodoStoreProvider: React.FC<Props> = ({ store, children }) => {
   return (
-    <TodoRepositoryContext.Provider value={repository}>
+    <TodoStoreContext.Provider value={store}>
       {children}
-    </TodoRepositoryContext.Provider>
+    </TodoStoreContext.Provider>
   );
 };
