@@ -1,8 +1,11 @@
-﻿import React, { useState } from 'react';
-import { Input } from '../../shared/ui/Input/Input';
+﻿import type React from 'react';
+import { useState } from 'react';
+
+import { useAuthState, useAuthActions } from '../../entities/user';
 import { Button } from '../../shared/ui/Button/Button';
 import { Card } from '../../shared/ui/Card/Card';
-import { useAuthState, useAuthActions } from '../../entities/user';
+import { Input } from '../../shared/ui/Input/Input';
+
 import styles from './AuthForm.module.css';
 
 interface LoginFormProps {
@@ -38,7 +41,10 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister }) => {
             type="email"
             placeholder="Email"
             value={email}
-            onChange={(e) => { setEmail(e.target.value); clearError(); }}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              clearError();
+            }}
             required
           />
           <Input
@@ -46,7 +52,10 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister }) => {
             type="password"
             placeholder="Password"
             value={password}
-            onChange={(e) => { setPassword(e.target.value); clearError(); }}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              clearError();
+            }}
             required
           />
           <Button type="submit" variant="primary" disabled={loading}>
@@ -55,7 +64,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister }) => {
         </form>
 
         <div className={styles.footer}>
-          Don't have an account?{' '}
+          Don&apos;t have an account?{' '}
           <button className={styles.link} onClick={onSwitchToRegister} type="button">
             Sign Up
           </button>

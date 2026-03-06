@@ -1,4 +1,5 @@
-import React from 'react';
+import type React from 'react';
+
 import { AuthStoreProvider, authStore } from '../../entities/user';
 
 /**
@@ -8,9 +9,5 @@ import { AuthStoreProvider, authStore } from '../../entities/user';
  * from REST API to localStorage, in-memory, or a test mock.
  */
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  return (
-    <AuthStoreProvider store={authStore}>
-      {children}
-    </AuthStoreProvider>
-  );
+  return <AuthStoreProvider store={authStore}>{children}</AuthStoreProvider>;
 };

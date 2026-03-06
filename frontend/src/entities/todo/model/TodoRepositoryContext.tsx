@@ -1,7 +1,9 @@
-import React, { createContext, useContext } from 'react';
+import type React from 'react';
+import { createContext, useContext } from 'react';
 import { useStore } from 'zustand';
-import type { StoreApi } from 'zustand/vanilla';
 import { useShallow } from 'zustand/shallow';
+import type { StoreApi } from 'zustand/vanilla';
+
 import type { TodoRepository, TodoState, TodoActions } from './repository';
 
 const TodoStoreContext = createContext<StoreApi<TodoRepository> | null>(null);
@@ -16,21 +18,27 @@ function useTodoStore(): StoreApi<TodoRepository> {
 
 /** Subscribe to todo state only — re-renders only when state changes */
 export function useTodoState(): TodoState {
-  return useStore(useTodoStore(), useShallow((s) => ({
-    todos: s.todos,
-    loading: s.loading,
-    error: s.error,
-  })));
+  return useStore(
+    useTodoStore(),
+    useShallow((s) => ({
+      todos: s.todos,
+      loading: s.loading,
+      error: s.error,
+    }))
+  );
 }
 
 /** Subscribe to todo actions only — never re-renders (actions are stable) */
 export function useTodoActions(): TodoActions {
-  return useStore(useTodoStore(), useShallow((s) => ({
-    fetchAll: s.fetchAll,
-    add: s.add,
-    remove: s.remove,
-    toggle: s.toggle,
-  })));
+  return useStore(
+    useTodoStore(),
+    useShallow((s) => ({
+      fetchAll: s.fetchAll,
+      add: s.add,
+      remove: s.remove,
+      toggle: s.toggle,
+    }))
+  );
 }
 
 /** Full repository access (backward compat) — re-renders on any change */
@@ -44,9 +52,5 @@ interface Props {
 }
 
 export const TodoStoreProvider: React.FC<Props> = ({ store, children }) => {
-  return (
-    <TodoStoreContext.Provider value={store}>
-      {children}
-    </TodoStoreContext.Provider>
-  );
+  return <TodoStoreContext.Provider value={store}>{children}</TodoStoreContext.Provider>;
 };

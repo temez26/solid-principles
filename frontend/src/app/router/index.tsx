@@ -1,11 +1,12 @@
-import React from 'react';
+import type React from 'react';
 import { Routes, Route, Outlet } from 'react-router-dom';
-import { AuthGuard } from '../providers/AuthGuard';
+
 import { AuthPage } from '../../pages/auth/AuthPage';
 import { DashboardPage } from '../../pages/dashboard/DashboardPage';
-import { TodosPage } from '../../pages/todos/TodosPage';
 import { SettingsPage } from '../../pages/settings/SettingsPage';
+import { TodosPage } from '../../pages/todos/TodosPage';
 import { Navbar } from '../../widgets/navbar';
+import { AuthGuard } from '../providers/AuthGuard';
 
 const ProtectedLayout: React.FC = () => (
   <AuthGuard>

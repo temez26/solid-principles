@@ -1,13 +1,15 @@
-﻿import React from 'react';
-import { NavLink } from 'react-router-dom';
+﻿import type React from 'react';
 import {
   IoGridOutline,
   IoCheckboxOutline,
   IoSettingsOutline,
   IoLogOutOutline,
 } from 'react-icons/io5';
+import { NavLink } from 'react-router-dom';
+
 import { useAuthState } from '../../entities/user';
 import { useLogout } from '../../features/logout';
+
 import styles from './Navbar.module.css';
 
 const links = [
@@ -28,9 +30,7 @@ export const Navbar: React.FC = () => {
           <NavLink
             key={l.to}
             to={l.to}
-            className={({ isActive }) =>
-              `${styles.link} ${isActive ? styles.active : ''}`
-            }
+            className={({ isActive }) => `${styles.link} ${isActive ? styles.active : ''}`}
           >
             {l.icon}
             <span>{l.label}</span>

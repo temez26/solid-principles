@@ -1,5 +1,7 @@
 import { useState, useMemo } from 'react';
+
 import type { Todo, TodoFilter } from '../../entities/todo';
+
 import { applyFilter, applySearch } from './filterStrategies';
 
 export function useFilteredTodos(todos: Todo[]) {

@@ -1,8 +1,10 @@
 ﻿import { createStore } from 'zustand/vanilla';
-import type { User } from './types';
-import type { AuthRepository } from './repository';
+
 import { authApi, type UserDTO } from '../../../shared/api/authApi';
 import { tokenStorage } from '../../../shared/lib/tokenStorage';
+
+import type { AuthRepository } from './repository';
+import type { User } from './types';
 
 function dtoToUser(dto: UserDTO): User {
   return {
@@ -70,16 +72,31 @@ export function createAuthStore() {
     async checkAuth() {
       const token = tokenStorage.get();
       if (!token) {
-        set({ isAuthenticated: false, user: null, token: null, loading: false });
+        set({
+          isAuthenticated: false,
+          user: null,
+          token: null,
+          loading: false,
+        });
         return;
       }
       set({ loading: true });
       try {
         const userDto = await authApi.getMe(token);
-        set({ user: dtoToUser(userDto), token, isAuthenticated: true, loading: false });
+        set({
+          user: dtoToUser(userDto),
+          token,
+          isAuthenticated: true,
+          loading: false,
+        });
       } catch {
         tokenStorage.remove();
-        set({ user: null, token: null, isAuthenticated: false, loading: false });
+        set({
+          user: null,
+          token: null,
+          isAuthenticated: false,
+          loading: false,
+        });
       }
     },
 

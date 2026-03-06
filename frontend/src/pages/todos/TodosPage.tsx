@@ -1,10 +1,12 @@
-import React from 'react';
-import { useFetchTodos } from '../../features/fetch-todos';
-import { AddTodo } from '../../features/add-todo';
+import type React from 'react';
+
 import { useTodoActions } from '../../entities/todo';
+import { AddTodo } from '../../features/add-todo';
+import { useFetchTodos } from '../../features/fetch-todos';
 import { FilterTodos, useFilteredTodos } from '../../features/filter-todos';
-import { TodoList } from '../../widgets/todo-list';
 import { StatsPanel } from '../../widgets/stats-panel';
+import { TodoList } from '../../widgets/todo-list';
+
 import styles from './TodosPage.module.css';
 
 export const TodosPage: React.FC = () => {
@@ -12,8 +14,12 @@ export const TodosPage: React.FC = () => {
   const { remove, toggle } = useTodoActions();
   const { filtered, activeFilter, setActiveFilter, search, setSearch } = useFilteredTodos(todos);
 
-  if (loading) return <div className={styles.loading}>Loading todos...</div>;
-  if (error) return <div className={styles.error}>Error: {error}</div>;
+  if (loading) {
+    return <div className={styles.loading}>Loading todos...</div>;
+  }
+  if (error) {
+    return <div className={styles.error}>Error: {error}</div>;
+  }
 
   return (
     <div className={styles.page}>
@@ -26,11 +32,7 @@ export const TodosPage: React.FC = () => {
         search={search}
         onSearchChange={setSearch}
       />
-      <TodoList
-        todos={filtered}
-        onToggle={toggle}
-        onDelete={remove}
-      />
+      <TodoList todos={filtered} onToggle={toggle} onDelete={remove} />
     </div>
   );
 };

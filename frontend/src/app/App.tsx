@@ -1,8 +1,11 @@
-﻿import React, { useEffect } from 'react';
+﻿import type React from 'react';
+import { useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
+
+import { useAuthActions } from '../entities/user';
+
 import { ThemeProvider, AuthProvider, TodoProvider } from './providers';
 import { AppRouter } from './router';
-import { useAuthActions } from '../entities/user';
 
 const AppContent: React.FC = () => {
   const { checkAuth } = useAuthActions();

@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import type React from 'react';
+import { useState } from 'react';
+
 import { useTodoActions } from '../../entities/todo';
+
 import styles from './AddTodo.module.css';
 
 export const AddTodo: React.FC = () => {
@@ -9,7 +12,9 @@ export const AddTodo: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const trimmed = title.trim();
-    if (!trimmed) return;
+    if (!trimmed) {
+      return;
+    }
 
     await add(trimmed);
     setTitle('');

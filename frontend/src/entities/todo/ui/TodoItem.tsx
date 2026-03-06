@@ -1,6 +1,8 @@
-import React from 'react';
+import type React from 'react';
 import { IoCheckmarkCircle, IoEllipseOutline, IoTrash } from 'react-icons/io5';
+
 import type { Todo } from '../model/types';
+
 import styles from './TodoItem.module.css';
 
 interface TodoItemProps {

@@ -1,7 +1,10 @@
-﻿import React, { useState } from 'react';
+﻿import type React from 'react';
+import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
+
 import { useAuthState } from '../../entities/user';
 import { LoginForm, RegisterForm } from '../../features/auth';
+
 import styles from './AuthPage.module.css';
 
 export const AuthPage: React.FC = () => {

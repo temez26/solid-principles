@@ -2,10 +2,7 @@ import { tokenStorage } from '../lib/tokenStorage';
 
 const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3001/api';
 
-export async function httpClient<T>(
-  path: string,
-  options?: RequestInit,
-): Promise<T> {
+export async function httpClient<T>(path: string, options?: RequestInit): Promise<T> {
   const token = tokenStorage.get();
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
@@ -26,6 +23,8 @@ export async function httpClient<T>(
     throw new Error(body.message ?? `Request failed: ${res.status}`);
   }
 
-  if (res.status === 204) return undefined as T;
+  if (res.status === 204) {
+    return undefined as T;
+  }
   return res.json() as Promise<T>;
 }

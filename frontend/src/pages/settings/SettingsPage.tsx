@@ -1,7 +1,9 @@
-import React from 'react';
+import type React from 'react';
+
+import { useTheme } from '../../shared/hooks/useTheme';
 import { Card } from '../../shared/ui/Card';
 import { Toggle } from '../../shared/ui/Toggle';
-import { useTheme } from '../../shared/hooks/useTheme';
+
 import styles from './SettingsPage.module.css';
 
 export const SettingsPage: React.FC = () => {
@@ -13,11 +15,7 @@ export const SettingsPage: React.FC = () => {
       <Card className={styles.section}>
         <h2 className={styles.subheading}>Appearance</h2>
         <div className={styles.row}>
-          <Toggle
-            label="Dark Mode"
-            checked={theme === 'dark'}
-            onChange={toggleTheme}
-          />
+          <Toggle label="Dark Mode" checked={theme === 'dark'} onChange={toggleTheme} />
         </div>
       </Card>
     </div>

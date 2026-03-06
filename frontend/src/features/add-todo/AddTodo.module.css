@@ -25,7 +25,7 @@
   box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.12);
 }
 
-.form button[type="submit"] {
+.form button[type='submit'] {
   padding: 10px 20px;
   border: none;
   border-radius: var(--radius-sm);
@@ -38,7 +38,7 @@
   transition: var(--transition);
 }
 
-.form button[type="submit"]:hover {
+.form button[type='submit']:hover {
   background: var(--color-accent-hover);
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
