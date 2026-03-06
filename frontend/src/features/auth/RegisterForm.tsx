@@ -2,7 +2,7 @@
 import { Input } from '../../shared/ui/Input/Input';
 import { Button } from '../../shared/ui/Button/Button';
 import { Card } from '../../shared/ui/Card/Card';
-import { useAuthRepository } from '../../entities/user';
+import { useAuthState, useAuthActions } from '../../entities/user';
 import styles from './AuthForm.module.css';
 
 interface RegisterFormProps {
@@ -16,7 +16,8 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
   const [confirmPassword, setConfirmPassword] = useState('');
   const [localError, setLocalError] = useState<string | null>(null);
 
-  const { register, loading, error, clearError } = useAuthRepository();
+  const { loading, error } = useAuthState();
+  const { register, clearError } = useAuthActions();
   const displayError = localError ?? error;
 
   const handleSubmit = async (e: React.FormEvent) => {

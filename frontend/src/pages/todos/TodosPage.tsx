@@ -1,7 +1,7 @@
 import React from 'react';
 import { useFetchTodos } from '../../features/fetch-todos';
 import { AddTodo } from '../../features/add-todo';
-import { useTodoRepository } from '../../entities/todo';
+import { useTodoActions } from '../../entities/todo';
 import { FilterTodos, useFilteredTodos } from '../../features/filter-todos';
 import { TodoList } from '../../widgets/todo-list';
 import { StatsPanel } from '../../widgets/stats-panel';
@@ -9,7 +9,7 @@ import styles from './TodosPage.module.css';
 
 export const TodosPage: React.FC = () => {
   const { todos, loading, error } = useFetchTodos();
-  const { remove, toggle } = useTodoRepository();
+  const { remove, toggle } = useTodoActions();
   const { filtered, activeFilter, setActiveFilter, search, setSearch } = useFilteredTodos(todos);
 
   if (loading) return <div className={styles.loading}>Loading todos...</div>;

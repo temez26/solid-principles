@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
-import { useTodoRepository } from '../../entities/todo';
+import { useTodoState, useTodoActions } from '../../entities/todo';
 
 export function useFetchTodos() {
-  const { todos, loading, error, fetchAll } = useTodoRepository();
+  const { todos, loading, error } = useTodoState();
+  const { fetchAll } = useTodoActions();
 
   useEffect(() => {
     fetchAll();

@@ -1,4 +1,9 @@
-﻿const TOKEN_KEY = 'auth_token';
+﻿/**
+ * NOTE: localStorage is vulnerable to XSS attacks.
+ * In production, prefer httpOnly cookies set by the server
+ * so the token is never accessible to client-side JavaScript.
+ */
+const TOKEN_KEY = 'auth_token';
 
 export const tokenStorage = {
   get(): string | null {

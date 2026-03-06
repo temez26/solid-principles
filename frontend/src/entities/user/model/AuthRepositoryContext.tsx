@@ -1,25 +1,55 @@
 import React, { createContext, useContext } from 'react';
-import type { AuthRepository } from './repository';
+import { useStore } from 'zustand';
+import type { StoreApi } from 'zustand/vanilla';
+import { useShallow } from 'zustand/shallow';
+import type { AuthRepository, AuthState, AuthActions } from './repository';
 
-const AuthRepositoryContext = createContext<AuthRepository | null>(null);
+const AuthStoreContext = createContext<StoreApi<AuthRepository> | null>(null);
 
-export const useAuthRepository = (): AuthRepository => {
-  const repo = useContext(AuthRepositoryContext);
-  if (!repo) {
-    throw new Error('useAuthRepository must be used within an AuthRepositoryProvider');
+function useAuthStore(): StoreApi<AuthRepository> {
+  const store = useContext(AuthStoreContext);
+  if (!store) {
+    throw new Error('useAuthStore must be used within an AuthStoreProvider');
   }
-  return repo;
-};
+  return store;
+}
+
+/** Subscribe to auth state only — re-renders only when state changes */
+export function useAuthState(): AuthState {
+  return useStore(useAuthStore(), useShallow((s) => ({
+    user: s.user,
+    token: s.token,
+    loading: s.loading,
+    error: s.error,
+    isAuthenticated: s.isAuthenticated,
+  })));
+}
+
+/** Subscribe to auth actions only — never re-renders (actions are stable) */
+export function useAuthActions(): AuthActions {
+  return useStore(useAuthStore(), useShallow((s) => ({
+    register: s.register,
+    login: s.login,
+    logout: s.logout,
+    checkAuth: s.checkAuth,
+    clearError: s.clearError,
+  })));
+}
+
+/** Full repository access (backward compat) — re-renders on any change */
+export function useAuthRepository(): AuthRepository {
+  return useStore(useAuthStore());
+}
 
 interface Props {
-  repository: AuthRepository;
+  store: StoreApi<AuthRepository>;
   children: React.ReactNode;
 }
 
-export const AuthRepositoryProvider: React.FC<Props> = ({ repository, children }) => {
+export const AuthStoreProvider: React.FC<Props> = ({ store, children }) => {
   return (
-    <AuthRepositoryContext.Provider value={repository}>
+    <AuthStoreContext.Provider value={store}>
       {children}
-    </AuthRepositoryContext.Provider>
+    </AuthStoreContext.Provider>
   );
 };

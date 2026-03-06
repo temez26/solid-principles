@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+import { createStore } from 'zustand/vanilla';
 import type { Todo } from './types';
 import type { TodoRepository } from './repository';
 import { todoApi } from '../../../shared/api/todoApi';
@@ -13,75 +13,59 @@ function dtoToTodo(dto: { id: string; title: string; completed: boolean; created
 }
 
 /**
- * Concrete implementation of TodoRepository using Zustand + REST API.
- * This is the ONLY place that knows about Zustand and the API.
- * All consumers depend on the TodoRepository abstraction via Context.
+ * Factory for creating a TodoRepository store.
+ * Use createTodoStore() in tests to get an isolated instance.
  */
-const useTodoStoreInternal = create<TodoRepository>()((set, get) => ({
-  todos: [],
-  loading: false,
-  error: null,
+export function createTodoStore() {
+  return createStore<TodoRepository>()((set) => ({
+    todos: [],
+    loading: false,
+    error: null,
 
-  async fetchAll() {
-    set({ loading: true, error: null });
-    try {
-      const dtos = await todoApi.getAll();
-      set({ todos: dtos.map(dtoToTodo), loading: false });
-    } catch (err) {
-      set({ error: (err as Error).message, loading: false });
-    }
-  },
+    async fetchAll() {
+      set({ loading: true, error: null });
+      try {
+        const dtos = await todoApi.getAll();
+        set({ todos: dtos.map(dtoToTodo), loading: false });
+      } catch (err) {
+        set({ error: (err as Error).message, loading: false });
+      }
+    },
 
-  getAll(): Todo[] {
-    return get().todos;
-  },
+    async add(title: string) {
+      try {
+        const dto = await todoApi.create(title);
+        const created = dtoToTodo(dto);
+        set((state) => ({ todos: [created, ...state.todos] }));
+      } catch (err) {
+        set({ error: (err as Error).message });
+      }
+    },
 
-  async add(title: string) {
-    try {
-      const dto = await todoApi.create(title);
-      const created = dtoToTodo(dto);
-      set((state) => ({ todos: [created, ...state.todos] }));
-    } catch (err) {
-      set({ error: (err as Error).message });
-    }
-  },
+    async remove(id: string) {
+      try {
+        await todoApi.remove(id);
+        set((state) => ({
+          todos: state.todos.filter((t) => t.id !== id),
+        }));
+      } catch (err) {
+        set({ error: (err as Error).message });
+      }
+    },
 
-  async remove(id: string) {
-    try {
-      await todoApi.remove(id);
-      set((state) => ({
-        todos: state.todos.filter((t) => t.id !== id),
-      }));
-    } catch (err) {
-      set({ error: (err as Error).message });
-    }
-  },
+    async toggle(id: string) {
+      try {
+        const dto = await todoApi.toggle(id);
+        const updated = dtoToTodo(dto);
+        set((state) => ({
+          todos: state.todos.map((t) => (t.id === id ? updated : t)),
+        }));
+      } catch (err) {
+        set({ error: (err as Error).message });
+      }
+    },
+  }));
+}
 
-  async toggle(id: string) {
-    try {
-      const dto = await todoApi.toggle(id);
-      const updated = dtoToTodo(dto);
-      set((state) => ({
-        todos: state.todos.map((t) => (t.id === id ? updated : t)),
-      }));
-    } catch (err) {
-      set({ error: (err as Error).message });
-    }
-  },
-
-  update(id: string, changes: Partial<Omit<Todo, 'id'>>) {
-    set((state) => ({
-      todos: state.todos.map((t) =>
-        t.id === id ? { ...t, ...changes } : t,
-      ),
-    }));
-  },
-}));
-
-/**
- * Hook that bridges Zustand store to TodoRepository interface.
- * Used ONLY by the TodoRepositoryProvider in app layer.
- */
-export const useZustandTodoRepository = (): TodoRepository => {
-  return useTodoStoreInternal();
-};
+/** Default app-wide store instance */
+export const todoStore = createTodoStore();

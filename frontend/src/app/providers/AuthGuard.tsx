@@ -1,13 +1,13 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useAuthRepository } from '../../entities/user';
+import { useAuthState } from '../../entities/user';
 
 interface AuthGuardProps {
   children: React.ReactNode;
 }
 
 export const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
-  const { isAuthenticated, loading } = useAuthRepository();
+  const { isAuthenticated, loading } = useAuthState();
 
   if (loading) {
     return (

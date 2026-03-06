@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { useTodoRepository } from '../../entities/todo';
+import { useTodoActions } from '../../entities/todo';
 import styles from './AddTodo.module.css';
 
 export const AddTodo: React.FC = () => {
   const [title, setTitle] = useState('');
-  const { add } = useTodoRepository();
+  const { add } = useTodoActions();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

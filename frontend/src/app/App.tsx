@@ -2,10 +2,10 @@
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider, AuthProvider, TodoProvider } from './providers';
 import { AppRouter } from './router';
-import { useAuthRepository } from '../entities/user';
+import { useAuthActions } from '../entities/user';
 
 const AppContent: React.FC = () => {
-  const { checkAuth } = useAuthRepository();
+  const { checkAuth } = useAuthActions();
 
   useEffect(() => {
     checkAuth();
