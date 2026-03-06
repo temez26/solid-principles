@@ -1,5 +1,6 @@
-import React from 'react';
+import type React from 'react';
 import { Navigate } from 'react-router-dom';
+
 import { useAuthState } from '../../entities/user';
 
 interface AuthGuardProps {
@@ -11,14 +12,16 @@ export const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
 
   if (loading) {
     return (
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100vh',
-        color: 'var(--color-text-secondary)',
-        fontSize: '1rem',
-      }}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '100vh',
+          color: 'var(--color-text-secondary)',
+          fontSize: '1rem',
+        }}
+      >
         Loading...
       </div>
     );

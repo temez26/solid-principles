@@ -1,7 +1,14 @@
-import React from 'react';
+import type React from 'react';
+import {
+  IoListOutline,
+  IoFlameOutline,
+  IoCheckmarkDoneOutline,
+  IoTrendingUpOutline,
+} from 'react-icons/io5';
+
 import type { Todo } from '../../entities/todo';
 import { computeTodoStats } from '../../entities/todo';
-import { IoListOutline, IoFlameOutline, IoCheckmarkDoneOutline, IoTrendingUpOutline } from 'react-icons/io5';
+
 import styles from './StatsPanel.module.css';
 
 interface StatsPanelProps {

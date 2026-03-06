@@ -1,4 +1,5 @@
-import React from 'react';
+import type React from 'react';
+
 import { TodoStoreProvider, todoStore } from '../../entities/todo';
 
 /**
@@ -8,9 +9,5 @@ import { TodoStoreProvider, todoStore } from '../../entities/todo';
  * from REST API to localStorage, in-memory, or a test mock.
  */
 export const TodoProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  return (
-    <TodoStoreProvider store={todoStore}>
-      {children}
-    </TodoStoreProvider>
-  );
+  return <TodoStoreProvider store={todoStore}>{children}</TodoStoreProvider>;
 };

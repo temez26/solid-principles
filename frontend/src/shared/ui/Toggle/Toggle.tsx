@@ -1,4 +1,5 @@
-import React from 'react';
+import type React from 'react';
+
 import styles from './Toggle.module.css';
 
 interface ToggleProps {
@@ -18,7 +19,9 @@ export const Toggle: React.FC<ToggleProps> = ({ checked, onChange, label }) => {
         aria-checked={checked}
         tabIndex={0}
         onKeyDown={(e) => {
-          if (e.key === ' ' || e.key === 'Enter') onChange(!checked);
+          if (e.key === ' ' || e.key === 'Enter') {
+            onChange(!checked);
+          }
         }}
       >
         <div className={styles.thumb} />

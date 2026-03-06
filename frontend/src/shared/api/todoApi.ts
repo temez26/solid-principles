@@ -25,9 +25,7 @@ export const todoApi = {
       body: JSON.stringify({ title }),
     }),
 
-  toggle: (id: string) =>
-    request<TodoDTO>(`/todos/${id}/toggle`, { method: 'PATCH' }),
+  toggle: (id: string) => request<TodoDTO>(`/todos/${id}/toggle`, { method: 'PATCH' }),
 
-  remove: (id: string) =>
-    request<void>(`/todos/${id}`, { method: 'DELETE' }),
+  remove: (id: string) => request<void>(`/todos/${id}`, { method: 'DELETE' }),
 };

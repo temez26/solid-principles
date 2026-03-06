@@ -1,9 +1,11 @@
-import React from 'react';
+import type React from 'react';
+
+import { useTodoActions } from '../../entities/todo';
+import { useFetchTodos } from '../../features/fetch-todos';
+import { Card } from '../../shared/ui/Card';
 import { StatsPanel } from '../../widgets/stats-panel';
 import { TodoList } from '../../widgets/todo-list';
-import { Card } from '../../shared/ui/Card';
-import { useFetchTodos } from '../../features/fetch-todos';
-import { useTodoActions } from '../../entities/todo';
+
 import styles from './DashboardPage.module.css';
 
 export const DashboardPage: React.FC = () => {
@@ -17,11 +19,7 @@ export const DashboardPage: React.FC = () => {
       <StatsPanel todos={todos} />
       <Card className={styles.recentCard}>
         <h2 className={styles.subheading}>Recent Todos</h2>
-        <TodoList
-          todos={recent}
-          onToggle={toggle}
-          onDelete={remove}
-        />
+        <TodoList todos={recent} onToggle={toggle} onDelete={remove} />
       </Card>
     </div>
   );

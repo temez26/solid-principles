@@ -1,8 +1,11 @@
-﻿import React, { useState } from 'react';
-import { Input } from '../../shared/ui/Input/Input';
+﻿import type React from 'react';
+import { useState } from 'react';
+
+import { useAuthState, useAuthActions } from '../../entities/user';
 import { Button } from '../../shared/ui/Button/Button';
 import { Card } from '../../shared/ui/Card/Card';
-import { useAuthState, useAuthActions } from '../../entities/user';
+import { Input } from '../../shared/ui/Input/Input';
+
 import styles from './AuthForm.module.css';
 
 interface RegisterFormProps {
@@ -59,7 +62,10 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
             type="text"
             placeholder="Username"
             value={username}
-            onChange={(e) => { setUsername(e.target.value); handleChange(); }}
+            onChange={(e) => {
+              setUsername(e.target.value);
+              handleChange();
+            }}
             required
           />
           <Input
@@ -67,7 +73,10 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
             type="email"
             placeholder="Email"
             value={email}
-            onChange={(e) => { setEmail(e.target.value); handleChange(); }}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              handleChange();
+            }}
             required
           />
           <Input
@@ -75,7 +84,10 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
             type="password"
             placeholder="Password"
             value={password}
-            onChange={(e) => { setPassword(e.target.value); handleChange(); }}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              handleChange();
+            }}
             required
           />
           <Input
@@ -83,7 +95,10 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
             type="password"
             placeholder="Confirm Password"
             value={confirmPassword}
-            onChange={(e) => { setConfirmPassword(e.target.value); handleChange(); }}
+            onChange={(e) => {
+              setConfirmPassword(e.target.value);
+              handleChange();
+            }}
             required
           />
           <Button type="submit" variant="primary" disabled={loading}>

@@ -1,7 +1,9 @@
-import React, { createContext, useContext } from 'react';
+import type React from 'react';
+import { createContext, useContext } from 'react';
 import { useStore } from 'zustand';
-import type { StoreApi } from 'zustand/vanilla';
 import { useShallow } from 'zustand/shallow';
+import type { StoreApi } from 'zustand/vanilla';
+
 import type { AuthRepository, AuthState, AuthActions } from './repository';
 
 const AuthStoreContext = createContext<StoreApi<AuthRepository> | null>(null);
@@ -16,24 +18,30 @@ function useAuthStore(): StoreApi<AuthRepository> {
 
 /** Subscribe to auth state only — re-renders only when state changes */
 export function useAuthState(): AuthState {
-  return useStore(useAuthStore(), useShallow((s) => ({
-    user: s.user,
-    token: s.token,
-    loading: s.loading,
-    error: s.error,
-    isAuthenticated: s.isAuthenticated,
-  })));
+  return useStore(
+    useAuthStore(),
+    useShallow((s) => ({
+      user: s.user,
+      token: s.token,
+      loading: s.loading,
+      error: s.error,
+      isAuthenticated: s.isAuthenticated,
+    }))
+  );
 }
 
 /** Subscribe to auth actions only — never re-renders (actions are stable) */
 export function useAuthActions(): AuthActions {
-  return useStore(useAuthStore(), useShallow((s) => ({
-    register: s.register,
-    login: s.login,
-    logout: s.logout,
-    checkAuth: s.checkAuth,
-    clearError: s.clearError,
-  })));
+  return useStore(
+    useAuthStore(),
+    useShallow((s) => ({
+      register: s.register,
+      login: s.login,
+      logout: s.logout,
+      checkAuth: s.checkAuth,
+      clearError: s.clearError,
+    }))
+  );
 }
 
 /** Full repository access (backward compat) — re-renders on any change */
@@ -47,9 +55,5 @@ interface Props {
 }
 
 export const AuthStoreProvider: React.FC<Props> = ({ store, children }) => {
-  return (
-    <AuthStoreContext.Provider value={store}>
-      {children}
-    </AuthStoreContext.Provider>
-  );
+  return <AuthStoreContext.Provider value={store}>{children}</AuthStoreContext.Provider>;
 };

@@ -1,9 +1,16 @@
 import { createStore } from 'zustand/vanilla';
-import type { Todo } from './types';
-import type { TodoRepository } from './repository';
+
 import { todoApi } from '../../../shared/api/todoApi';
 
-function dtoToTodo(dto: { id: string; title: string; completed: boolean; createdAt: string }): Todo {
+import type { TodoRepository } from './repository';
+import type { Todo } from './types';
+
+function dtoToTodo(dto: {
+  id: string;
+  title: string;
+  completed: boolean;
+  createdAt: string;
+}): Todo {
   return {
     id: dto.id,
     title: dto.title,

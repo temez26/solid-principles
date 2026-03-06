@@ -1,5 +1,7 @@
-import React from 'react';
+import type React from 'react';
+
 import type { TodoFilter } from '../../entities/todo';
+
 import styles from './FilterTodos.module.css';
 
 interface FilterTodosProps {

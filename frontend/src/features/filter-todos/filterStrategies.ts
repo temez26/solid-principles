@@ -21,7 +21,9 @@ export function applyFilter(todos: Todo[], filter: TodoFilter): Todo[] {
 
 export function applySearch(todos: Todo[], query: string): Todo[] {
   const trimmed = query.trim().toLowerCase();
-  if (!trimmed) return todos;
+  if (!trimmed) {
+    return todos;
+  }
   return todos.filter((t) => t.title.toLowerCase().includes(trimmed));
 }
 
