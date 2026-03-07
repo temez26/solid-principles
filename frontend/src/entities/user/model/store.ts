@@ -16,13 +16,13 @@ function dtoToUser(dto: UserDTO): User {
   };
 }
 
-const initialToken = tokenStorage.get();
 
 /**
  * Factory for creating an AuthRepository store.
  * Use createAuthStore() in tests to get an isolated instance.
  */
 export function createAuthStore() {
+  const initialToken = tokenStorage.get();
   return createStore<AuthRepository>()((set) => ({
     user: null,
     token: initialToken,
@@ -82,7 +82,7 @@ export function createAuthStore() {
       }
       set({ loading: true });
       try {
-        const userDto = await authApi.getMe(token);
+        const userDto = await authApi.getMe();
         set({
           user: dtoToUser(userDto),
           token,

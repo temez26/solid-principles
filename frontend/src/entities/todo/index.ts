@@ -5,7 +5,6 @@ export { computeTodoStats } from './model/stats';
 export {
   useTodoState,
   useTodoActions,
-  useTodoRepository,
   TodoStoreProvider,
 } from './model/TodoRepositoryContext';
 export { todoStore, createTodoStore } from './model/store';

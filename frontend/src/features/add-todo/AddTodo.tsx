@@ -1,8 +1,10 @@
 import type React from 'react';
 import { useState } from 'react';
 
-import { useTodoActions } from '../../entities/todo';
 
+import { useTodoActions } from '../../entities/todo';
+import { Input } from '../../shared/ui/Input';
+import { Button } from '../../shared/ui/Button';
 import styles from './AddTodo.module.css';
 
 export const AddTodo: React.FC = () => {
@@ -22,14 +24,17 @@ export const AddTodo: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
-      <input
+      <Input
         type="text"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="Add a new todo..."
+        fullWidth
         className={styles.input}
       />
-      <button type="submit">Add</button>
+      <Button type="submit" variant="primary">
+        Add
+      </Button>
     </form>
   );
 };

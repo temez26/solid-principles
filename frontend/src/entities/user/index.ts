@@ -2,7 +2,6 @@
 export {
   useAuthState,
   useAuthActions,
-  useAuthRepository,
   AuthStoreProvider,
 } from './model/AuthRepositoryContext';
 export type { AuthRepository, AuthState, AuthActions } from './model/repository';

@@ -35,11 +35,5 @@ export const authApi = {
       body: JSON.stringify({ email, password }),
     }),
 
-  getMe: (token: string) =>
-    httpClient<UserDTO>('/users/me', {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    }),
+  getMe: () => httpClient<UserDTO>('/users/me'),
 };
