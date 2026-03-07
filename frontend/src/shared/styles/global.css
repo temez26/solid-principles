@@ -8,6 +8,9 @@
   --color-accent-hover: #0077ed;
   --color-danger: #ff3b30;
   --color-success: #34c759;
+  --color-stat-active: #f59e0b;
+  --color-stat-completed: #10b981;
+  --color-stat-progress: #8b5cf6;
   --color-border: rgba(0, 0, 0, 0.06);
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);

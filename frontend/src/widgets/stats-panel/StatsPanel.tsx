@@ -28,21 +28,21 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ todos }) => {
         <span className={styles.label}>Total</span>
       </div>
       <div className={styles.stat}>
-        <span className={styles.icon} style={{ color: '#f59e0b' }}>
+        <span className={styles.icon} style={{ color: 'var(--color-stat-active)' }}>
           <IoFlameOutline />
         </span>
         <span className={styles.value}>{active}</span>
         <span className={styles.label}>Active</span>
       </div>
       <div className={styles.stat}>
-        <span className={styles.icon} style={{ color: '#10b981' }}>
+        <span className={styles.icon} style={{ color: 'var(--color-stat-completed)' }}>
           <IoCheckmarkDoneOutline />
         </span>
         <span className={styles.value}>{completed}</span>
         <span className={styles.label}>Completed</span>
       </div>
       <div className={styles.stat}>
-        <span className={styles.icon} style={{ color: '#8b5cf6' }}>
+        <span className={styles.icon} style={{ color: 'var(--color-stat-progress)' }}>
           <IoTrendingUpOutline />
         </span>
         <span className={styles.value}>{percentage}%</span>
